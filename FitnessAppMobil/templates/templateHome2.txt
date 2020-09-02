@@ -1,0 +1,109 @@
+import React, { Component, useState, useEffect } from "react";
+import { Button, View, Text } from "react-native";
+
+export default function Home({ navigation, route }) {
+  //console.log(this.screenProps.handleLogin);
+
+  /*useEffect((prevProps) => {
+    if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
+      this.setState({ isLoggedIn: this.props.isLoggedIn });
+    }
+  }, []);*/
+
+  const isAuthenticated = localStorage.getItem("token");
+  if (isAuthenticated === false) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Welcome!</Text>
+        <Button
+          title="Go to Fitnessinfo"
+          onPress={() => navigation.navigate("Fitnessinfo")}
+        />
+        <Button
+          title="Go to Fitnessplan"
+          onPress={() => navigation.navigate("Fitnessplan")}
+        />
+        {
+          <Button
+            title="Go to Login"
+            onPress={() => navigation.navigate("Login")}
+          />
+        }
+      </View>
+    );
+  } else {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Eingeloggt!</Text>
+        <Button
+          title="Go to Fitnessinfo"
+          onPress={() => navigation.navigate("FitnessinfoAdmin")}
+        />
+        <Button
+          title="Go to Fitnessplan"
+          onPress={() => navigation.navigate("FitnessplanAdmin")}
+        />
+        <Button
+          title="Logout"
+          onPress={() => {
+            route.params.handleLogout();
+            navigation.navigate("Home");
+          }}
+        />
+      </View>
+    );
+  }
+}
+
+//export default Home;
+const isAuthenticated = localStorage.getItem("token");
+if (this.props.route.params.isLoggedIn === false) {
+  return (
+    <View
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    >
+      <Text>Welcome!</Text>
+      <Button
+        title="Go to Fitnessinfo"
+        onPress={() => this.props.navigation.navigate("Fitnessinfo")}
+      />
+      <Button
+        title="Go to Fitnessplan"
+        onPress={() => this.props.navigation.navigate("Fitnessplan")}
+      />
+      {
+        <Button
+          title="Go to Login"
+          onPress={() => this.props.navigation.navigate("Login")}
+        />
+      }
+    </View>
+  );
+} else {
+  return (
+    <View
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    >
+      <Text>Eingeloggt!</Text>
+      <Button
+        title="Go to Fitnessinfo"
+        onPress={() => this.props.navigation.navigate("FitnessinfoAdmin")}
+      />
+      <Button
+        title="Go to Fitnessplan"
+        onPress={() => this.props.navigation.navigate("FitnessplanAdmin")}
+      />
+      <Button
+        title="Logout"
+        onPress={() => {
+          this.props.route.params.handleLogout();
+          this.props.navigation.navigate("Home");
+        }}
+      />
+    </View>
+  );
+}
+}
+}
+
+//export default Home;
