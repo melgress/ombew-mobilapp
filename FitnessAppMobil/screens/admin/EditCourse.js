@@ -12,21 +12,27 @@ export default class EditCourse extends Component {
 
     this.state = {
       courseList: {
-        id: null,
-        name: "",
-        price: "",
-        description: "",
-        submitted: false,
+        // id: null,
+        name: this.props.route.params.name,
+        price: this.props.route.params.price,
+        description: this.props.route.params.description,
+        //submitted: false,
       },
     };
   }
 
-  componentDidMount() {}
-  onChangeDate(e) {
+  componentDidMount() {
     this.setState({
-      date: e.target.value,
+      name: this.props.route.params.name,
+    });
+    this.setState({
+      price: this.props.route.params.price.toString(),
+    });
+    this.setState({
+      description: this.props.route.params.description,
     });
   }
+
   onChangeName = (text) => {
     this.setState({
       name: text,
@@ -55,7 +61,6 @@ export default class EditCourse extends Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          date: this.state.date,
           name: this.state.name,
           price: this.state.price,
           description: this.state.description,
@@ -82,7 +87,7 @@ export default class EditCourse extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangeName(text)}
-          //value={value}
+          defaultValue={this.state.name}
         />
         <TextInput
           style={{
@@ -92,7 +97,7 @@ export default class EditCourse extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangePrice(text)}
-          //value={value}
+          defaultValue={this.state.price}
         />
         <TextInput
           style={{
@@ -102,7 +107,7 @@ export default class EditCourse extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangeDescription(text)}
-          //value={value}
+          defaultValue={this.state.description}
         />
         <Button title="Edit" onPress={() => this.handleSubmit()}></Button>
       </View>

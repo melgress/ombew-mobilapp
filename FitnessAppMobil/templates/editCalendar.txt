@@ -1,0 +1,96 @@
+import React, { Component } from "react";
+
+import { View, Text, TextInput, Button } from "react-native";
+import DatePicker from "react-native-datepicker";
+
+export default class EditCalendar extends Component {
+  constructor(props) {
+    super(props);
+    this.onChangeDate = this.onChangeDate.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      courseList: {
+        id: null,
+        name: "",
+        price: "",
+        description: "",
+        submitted: false,
+      },
+      date: "",
+      name: "",
+    };
+  }
+
+  componentDidMount() {}
+
+  onChangeDate = (text) => {
+    this.setState({
+      date: text,
+    });
+  };
+  onChangeName = (text) => {
+    this.setState({
+      name: text,
+    });
+  };
+
+  //ToDo id in die URL bekommen
+  handleSubmit() {
+    //id = this.props.route.params.course.id;
+    fetch(
+      "http://192.168.178.23:9000/api/fitnessevent/" +
+        this.props.route.params.id,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: this.state.date,
+          name: this.state.name,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((error) => {
+        throw error;
+      });
+    this.props.navigation.goBack("Fitnessplan");
+    console.log("Edited");
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Edit Screen</Text>
+        <TextInput
+          style={{
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            width: 300,
+          }}
+          onChangeText={(text) => this.onChangeDate(text)}
+          placecholder="2020-09-04"
+          //value={value}
+        />
+        <TextInput
+          style={{
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            width: 300,
+          }}
+          onChangeText={(text) => this.onChangeName(text)}
+          //value={value}
+        />
+        <Button title="Edit" onPress={() => this.handleSubmit()}></Button>
+      </View>
+    );
+  }
+}
+
+//export default Home;

@@ -4,26 +4,68 @@ const routerCalendar = express.Router();
 
 //Creating GET Router to fetch all the learner details from the MySQL Database
 
-//Creating GET Router to fetch all the events from Database for the Calendar
+//Creating GET Router to fetch all the events from Database for the Calendar (Agenda)
 routerCalendar.get("/fitnessevents", (req, res) => {
-  db.query("SELECT name from events", (err, rows, fields) => {
+  db.query("SELECT * from agenda", (err, rows, fields) => {
     if (!err) res.send(rows);
     else console.log(err);
   });
 });
 
-//route for insert data into event
-routerCalendar.post("/addEvent", (req, res) => {
+//update table agenda
+routerCalendar.put("/fitnessevent/:id", function (req, res) {
   let data = {
-    title: req.body.name,
-    startdate: req.body.startdate,
-    enddate: req.body.enddate,
+    date: req.body.date,
+    name: req.body.name,
   };
-  let sql = "INSERT INTO events SET ?";
+  console.log("Put received");
+  db.query(
+    "UPDATE agenda SET ? WHERE id = ?",
+    [data, req.params.id],
+    (err, result) => {
+      if (err) {
+        console.log(err.message);
+        throw err;
+      }
+      res.send(data);
+    }
+  );
+});
+
+//delete from agenda
+routerCalendar.delete("/fitnessevents/:id", (req, res) => {
+  db.query(
+    "DELETE FROM agenda WHERE id = ?",
+    [req.params.id],
+    (err, rows, fields) => {
+      if (!err) {
+        console.log("Fitness deleted successfully.");
+        //res.redirect("/api/fitness");
+      } else console.log(err);
+    }
+  );
+});
+
+//For DropDownMenu
+routerCalendar.get("/dropdown", (req, res) => {
+  db.query("SELECT * from dropdown", (err, rows, fields) => {
+    if (!err) res.send(rows);
+    else console.log(err);
+  });
+});
+
+//route for insert data into agenda
+routerCalendar.post("/addFitnessevent", (req, res) => {
+  let data = {
+    name: req.body.name,
+    date: req.body.date,
+    //note: req.body.note,
+  };
+  let sql = "INSERT INTO agenda SET ?";
   db.query(sql, data, (err, results) => {
     if (err) throw err;
     console.log(data);
-    res.redirect("/api/fitness");
+    //res.redirect("/api/fitness");
   });
 });
 

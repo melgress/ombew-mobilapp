@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, AsyncStorage } from "react-native";
+import { View, TextInput } from "react-native";
 //import credentials from "./data/credentials.json";
 import { Button } from "react-native-elements";
 
@@ -8,7 +8,7 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      isLoggedIn: this.props.route.params.isLoggedIn,
+      //isLoggedIn: this.props.route.params.isLoggedIn,
     };
   }
   componentDidMount() {}
@@ -38,10 +38,6 @@ class Login extends Component {
             this.props.route.params.handleLogin();
             //this.props.navigation.navigate("Home");
           }}
-        />
-        <Button
-          title="Logout"
-          onPress={() => this.props.route.params.handleLogout()}
         />
       </View>
     );

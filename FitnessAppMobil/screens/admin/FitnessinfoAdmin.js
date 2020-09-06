@@ -1,18 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  ListView,
-  StyleSheet,
-  FlatList,
-  Section,
-  TextInput,
-  ScrollView,
-} from "react-native";
-import Modal from "react-native-modal";
+import { StyleSheet, ScrollView } from "react-native";
 import { ListItem, Button } from "react-native-elements";
-
-//import courseList from "./data/courses.json";
 
 class FitnessinfoAdmin extends Component {
   constructor(props) {
@@ -20,9 +8,7 @@ class FitnessinfoAdmin extends Component {
 
     this._deleteCourse = this._deleteCourse.bind(this);
     this.state = {
-      tableHead: ["Name", "Preis", "Beschreibung"],
       courseList: [],
-      isModalVisible: false,
     };
   }
 
@@ -49,13 +35,6 @@ class FitnessinfoAdmin extends Component {
     });
   }
 
-  toggleModal = () => {
-    this.setState({ isModalVisible: !this.state.isModalVisible });
-  };
-
-  _addCourse() {
-    console.log("Added");
-  }
   _deleteCourse(id) {
     const { courseList } = this.state;
     fetch("http://192.168.178.23:9000/api/fitness/" + id, {
@@ -76,9 +55,6 @@ class FitnessinfoAdmin extends Component {
       });
 
     console.log("Deleted");
-  }
-  _editCourse() {
-    console.log("Edited");
   }
 
   render() {
@@ -108,6 +84,9 @@ class FitnessinfoAdmin extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("EditCourse", {
                     id: course.id,
+                    name: course.name,
+                    price: course.price,
+                    description: course.description,
                   })
                 }
               ></Button>

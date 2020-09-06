@@ -1,16 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  ListView,
-  StyleSheet,
-  FlatList,
-  Section,
-  TextInput,
-  ScrollView,
-} from "react-native";
-import Modal from "react-native-modal";
-import { ListItem, Button } from "react-native-elements";
+import { StyleSheet, ScrollView } from "react-native";
+import { ListItem } from "react-native-elements";
 
 //import courseList from "./data/courses.json";
 

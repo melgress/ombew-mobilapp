@@ -10,15 +10,7 @@ routerFitness.get("/fitness", (req, res) => {
   });
 });
 
-//Creating GET Router to fetch all the events from Database for the Calendar
-routerFitness.get("/fitnessevents", (req, res) => {
-  db.query("SELECT * FROM events", (err, rows, fields) => {
-    if (!err) res.send(rows);
-    else console.log(err);
-  });
-});
-
-//Router to GET specific learner detail from the MySQL database
+//Get all courses
 routerFitness.get("/fitness/:id", (req, res) => {
   db.query(
     "SELECT * FROM fitness WHERE id = ?",
@@ -29,7 +21,7 @@ routerFitness.get("/fitness/:id", (req, res) => {
     }
   );
 });
-//route for insert data
+//add a course
 routerFitness.post("/addCourse", (req, res) => {
   let data = {
     date: req.body.date,
@@ -44,20 +36,7 @@ routerFitness.post("/addCourse", (req, res) => {
   });
 });
 
-//route for insert data into event
-routerFitness.post("/addEvent", (req, res) => {
-  let data = {
-    date: req.body.date,
-    title: req.body.title,
-  };
-  let sql = "INSERT INTO events SET ?";
-  db.query(sql, data, (err, results) => {
-    if (err) throw err;
-    console.log(data);
-    res.redirect("/api/fitness");
-  });
-});
-
+//update a course
 routerFitness.put("/fitness/:id", function (req, res) {
   let data = {
     date: req.body.date,
@@ -75,11 +54,11 @@ routerFitness.put("/fitness/:id", function (req, res) {
         throw err;
       }
       res.send(data);
-      //res.redirect("/api/fitness");
     }
   );
 });
 
+//delete a course
 routerFitness.delete("/fitness/:id", (req, res) => {
   db.query(
     "DELETE FROM fitness WHERE id = ?",

@@ -1,11 +1,6 @@
-// App.js
-
 import React, { Component } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, Text } from "react-native";
-import ThemeContext from "./screens/theme-context";
-import { Button } from "react-native-elements";
 
 import Home from "./screens/Home";
 import Fitnessplan from "./screens/Fitnessplan";
@@ -15,8 +10,8 @@ import EditCourse from "./screens/admin/EditCourse";
 import AddCourse from "./screens/admin/AddCourse";
 import FitnessinfoAdmin from "./screens/admin/FitnessinfoAdmin";
 import FitnessplanAdmin from "./screens/admin/FitnessplanAdmin";
-
-//import credentials from "./screens/data/credentials.json";
+import AddToCalendar from "./screens/admin/AddToCalendar";
+import EditCalendar from "./screens/admin/EditCalendar";
 
 const Stack = createStackNavigator();
 
@@ -82,6 +77,16 @@ export default class App extends Component {
             name="EditCourse"
             component={EditCourse}
             options={{ title: "EditCourse" }}
+          />
+          <Stack.Screen
+            name="AddToCalendar"
+            component={AddToCalendar}
+            options={{ title: "AddToCalendar" }}
+          />
+          <Stack.Screen
+            name="EditCalendar"
+            component={EditCalendar}
+            options={{ title: "EditCalendar" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

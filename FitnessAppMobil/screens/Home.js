@@ -4,6 +4,7 @@ import { Button, View, Text, AsyncStorage } from "react-native";
 export default class Home extends Component {
   constructor(props) {
     super(props);
+    this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.state = {
       username: "",

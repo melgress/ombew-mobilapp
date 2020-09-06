@@ -1,99 +1,144 @@
 import React, { Component } from "react";
-import { Button, View, Text, StyleSheet, ScrollView } from "react-native";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
-import { LocaleConfig } from "react-native-calendars";
-import WeeklyCalendar from "react-native-weekly-calendar";
 
-class Fitnessplan extends Component {
+import { StyleSheet, View, Text } from "react-native";
+import { Agenda } from "react-native-calendars";
+import { SearchBar } from "react-native-elements";
+
+export default class Fitnessplan extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { date: "" };
+    this.loadEvents = this.loadEvents.bind(this);
+    this.state = {
+      events: [],
+      eventsFormatted: {},
+      search: "",
+    };
   }
 
   componentDidMount() {
-    var that = this;
-
-    var date = new Date().getDate(); //Current Date
-    var month = new Date().getMonth() + 1; //Current Month
-    var year = new Date().getFullYear(); //Current Year
-    var hours = new Date().getHours(); //Current Hours
-    var min = new Date().getMinutes(); //Current Minutes
-    var sec = new Date().getSeconds(); //Current Seconds
-
-    that.setState({
-      //Setting the value of the date time
-      date: date,
-    });
+    this.loadEvents();
+    this.focusListener = this.props.navigation.addListener("focus", () =>
+      this.loadEvents()
+    );
   }
 
-  render() {
-    const sampleEvents = [
-      {
-        start: "2020-08-30 09:00:00",
-        duration: "160:20:00",
-        note: "Walk my dog",
+  componentWillUnmount() {
+    this.focusListener();
+  }
+  updateSearch = (text) => {
+    this.setState({
+      search: text,
+    });
+  };
+  filterCalendar = () => {
+    const events = this.state.events;
+    const search = this.state.search;
+    this.setState({
+      events: events.filter((event) => event.name == search),
+    });
+    return this.state.events;
+    console.log(this.state.events);
+    console.log(this.state.search);
+  };
+
+  loadEvents = (day) => {
+    //Charge les items du mois
+    fetch("http://192.168.178.23:9000/api/fitnessevents")
+      .then((response) => response.json())
+      .then((events) => {
+        console.log(`events: ${JSON.stringify(events)}`);
+        return events;
+      })
+      .then((events) => {
+        var eventsFormatted = {};
+        if (events.length) {
+          events.map((event) => {
+            let day = event.date; //.toDate().toISOString().split("T")[0]; // Format to YYYY-MM-DD
+
+            if (eventsFormatted[day]) {
+              eventsFormatted[day].push(event);
+            } else {
+              eventsFormatted[day] = [event];
+            }
+          });
+          this.setState({
+            eventsFormatted: eventsFormatted,
+          });
+          console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
+        }
+      });
+  };
+
+  _deleteEvent(id) {
+    const { eventsFormatted } = this.state;
+    const events = this.state;
+    fetch("http://192.168.178.23:9000/api/fitnessevents/" + id, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      /*{
-        start: "2020-08-31 09:00:00",
-        duration: "01:00:00",
-        note: "Doctor's appointment",
-      },
-      {
-        start: "2020-09-01 09:00:00",
-        duration: "00:30:00",
-        note: "Morning exercise",
-      },
-      {
-        start: "2020-09-02 09:00:00",
-        duration: "02:00:00",
-        note: "Meeting with client",
-      },
-      {
-        start: "2020-09-03 09:00:00",
-        duration: "01:00:00",
-        note: "Dinner with family",
-      },
-      {
-        start: "2020-09-04 09:00:00",
-        duration: "01:00:00",
-        note: "Schedule 1",
-      },
-      {
-        start: "2020-09-05 09:00:00",
-        duration: "02:00:00",
-        note: "Schedule 2",
-      },
-      {
-        start: "2020-09-06 09:00:00",
-        duration: "01:30:00",
-        note: "Schedule 3",
-      },
-      {
-        start: "2020-09-07 09:00:00",
-        duration: "02:00:00",
-        note: "Schedule 4",
-      },
-      {
-        start: "2020-09-08 09:00:00",
-        duration: "01:00:00",
-        note: "Schedule 5",
-      },*/
-    ];
+    })
+      .then(() => {
+        this.setState({
+          events: events.filter((event) => event.id !== id),
+        });
+        return;
+      })
+      .catch((error) => {
+        throw error;
+      });
+    this.forceUpdate();
+    console.log("Deleted");
+  }
+
+  renderItem(item) {
+    // console.log(item.name);
+    const height = "150";
     return (
-      <View style={styles.container}>
-        <WeeklyCalendar events={sampleEvents} style={{ height: 400 }} />
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <Text>{item.name}</Text>
+      </View>
+    );
+  }
+
+  renderEmptyDate() {
+    return (
+      <View>
+        <Text>This is empty date!</Text>
+      </View>
+    );
+  }
+  /* renderDay() {
+    return (
+      <View>
+        <Button title="Add"></Button>
+      </View>
+    );
+  }*/
+
+  render() {
+    const eventsFormatted = this.state.eventsFormatted;
+
+    return (
+      <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
+        <Agenda
+          //style={styles.calendar}
+          selected={"2020-09-04"}
+          items={eventsFormatted}
+          loadItemsForMonth={this.loadEvents}
+          renderItem={this.renderItem.bind(this)}
+          // renderDay={this.renderDay.bind(this)}
+          renderEmptyData={() => null}
+          renderEmptyDate={this.renderEmptyDate.bind(this)}
+          //loadEvents={(day) => this.loadEvents(day)}
+          events={this.state.eventsFormatted}
+          onPressEvent={(event) =>
+            this.props.navigation.navigate("Login", { event })
+          }
+        />
       </View>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
-
-export default Fitnessplan;

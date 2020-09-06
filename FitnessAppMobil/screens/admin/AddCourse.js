@@ -1,17 +1,7 @@
 import React, { Component } from "react";
 
-import {
-  View,
-  Text,
-  ListView,
-  StyleSheet,
-  FlatList,
-  Section,
-  TextInput,
-} from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Button } from "react-native-elements";
-
-import Fitnessinfo from "../Fitnessinfo";
 
 export default class AddCourse extends Component {
   constructor(props) {
@@ -22,13 +12,9 @@ export default class AddCourse extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
-      //courseList: {
-      id: null,
       name: "",
       price: "",
       description: "",
-      submitted: false,
-      // },
     };
   }
 
@@ -81,7 +67,6 @@ export default class AddCourse extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangeName(text)}
-          //value={value}
         />
         <TextInput
           style={{
@@ -91,8 +76,6 @@ export default class AddCourse extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangePrice(text)}
-
-          //value={value}
         />
         <TextInput
           style={{
@@ -102,12 +85,9 @@ export default class AddCourse extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangeDescription(text)}
-          //value={value}
         />
         <Button title="Add" onPress={() => this.handleSubmit()}></Button>
       </View>
     );
   }
 }
-
-//export default Home;
