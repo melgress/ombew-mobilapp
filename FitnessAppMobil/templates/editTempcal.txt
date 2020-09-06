@@ -1,23 +1,25 @@
 import React, { Component } from "react";
+
+import { View, TextInput, Button, ScrollView } from "react-native";
+//import DatePicker from "react-native-datepicker";
 import DropDownPicker from "react-native-dropdown-picker";
 
-import { View, TextInput, ScrollView } from "react-native";
-import { Button } from "react-native-elements";
-
-//import courseList from "./data/courses.json";
-
-class EditCalendar extends Component {
+export default class EditCalendar extends Component {
   constructor(props) {
     super(props);
     this.onChangeDate = this.onChangeDate.bind(this);
+    // this.onChangeName = this.onChangeName.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
     this.state = {
+      date: "",
+      name: "",
       items: [],
       item: "",
-      name: "",
-      date: "",
     };
     this.controller;
   }
+
   componentDidMount() {
     // fetch("http://192.168.0.176:9000/api/fitness")
     //fetch("http://192.168.178.23:9000/api/fitness")
@@ -26,16 +28,20 @@ class EditCalendar extends Component {
       .then((data) => {
         this.setState({ items: data });
       });
-    this.setState({
+    /*this.setState({
       date: this.props.route.params.date,
-    });
+    });*/
   }
-
   onChangeDate = (text) => {
     this.setState({
       date: text,
     });
   };
+  /* onChangeName = (text) => {
+    this.setState({
+      name: text,
+    });
+  };*/
 
   handleSubmit() {
     //id = this.props.route.params.course.id;
@@ -70,6 +76,7 @@ class EditCalendar extends Component {
         ))}
       </View>
     );
+    //console.log(this.props.route.params.name);
     return (
       <ScrollView>
         <DropDownPicker
@@ -84,16 +91,12 @@ class EditCalendar extends Component {
             );
           }}
           //defaultValue={this.state.countries}
-          //containerStyle={{ flex:  }}
-          dropDownMaxHeight={300}
+          containerStyle={{ height: 40 }}
           style={{ backgroundColor: "#fafafa" }}
           itemStyle={{
             justifyContent: "flex-start",
           }}
-          //containerStyle={{ height: 100 }}
-          //style={{ paddingVertical: 100 }}
-          // dropDownStyle={{ backgroundColor: "#fafafa" }}
-          dropDownStyle={{ marginTop: 2 }}
+          dropDownStyle={{ backgroundColor: "#fafafa" }}
           onChangeItem={(item) =>
             this.setState({
               name: item.value,
@@ -108,13 +111,12 @@ class EditCalendar extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangeDate(text)}
-          //placeholder="2020-09-04"
-          defaultValue={this.state.date}
+          placeholder="2020-09-04"
         />
-        <Button title="Add" onPress={() => this.handleSubmit()}></Button>
+        <Button title="Edits" onPress={() => this.handleSubmit()}></Button>
       </ScrollView>
     );
   }
 }
 
-export default EditCalendar;
+//export default Home;

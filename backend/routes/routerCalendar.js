@@ -6,7 +6,7 @@ const routerCalendar = express.Router();
 
 //Creating GET Router to fetch all the events from Database for the Calendar (Agenda)
 routerCalendar.get("/fitnessevents", (req, res) => {
-  db.query("SELECT * from agenda", (err, rows, fields) => {
+  db.query("SELECT * from agenda", (err, rows) => {
     if (!err) res.send(rows);
     else console.log(err);
   });
@@ -19,17 +19,13 @@ routerCalendar.put("/fitnessevent/:id", function (req, res) {
     name: req.body.name,
   };
   console.log("Put received");
-  db.query(
-    "UPDATE agenda SET ? WHERE id = ?",
-    [data, req.params.id],
-    (err, result) => {
-      if (err) {
-        console.log(err.message);
-        throw err;
-      }
-      res.send(data);
+  db.query("UPDATE agenda SET ? WHERE id = ?", [data, req.params.id], (err) => {
+    if (err) {
+      console.log(err.message);
+      throw err;
     }
-  );
+    res.send(data);
+  });
 });
 
 //delete from agenda
@@ -40,7 +36,7 @@ routerCalendar.delete("/fitnessevents/:id", (req, res) => {
     (err, rows, fields) => {
       if (!err) {
         console.log("Fitness deleted successfully.");
-        //res.redirect("/api/fitness");
+        res.redirect("/api/fitnessevents");
       } else console.log(err);
     }
   );

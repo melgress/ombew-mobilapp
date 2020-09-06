@@ -60,16 +60,12 @@ routerFitness.put("/fitness/:id", function (req, res) {
 
 //delete a course
 routerFitness.delete("/fitness/:id", (req, res) => {
-  db.query(
-    "DELETE FROM fitness WHERE id = ?",
-    [req.params.id],
-    (err, rows, fields) => {
-      if (!err) {
-        console.log("Fitness deleted successfully.");
-        res.redirect("/api/fitness");
-      } else console.log(err);
-    }
-  );
+  db.query("DELETE FROM fitness WHERE id = ?", [req.params.id], (err) => {
+    if (!err) {
+      console.log("Fitness deleted successfully.");
+      res.redirect("/api/fitness");
+    } else console.log(err);
+  });
 });
 
 module.exports = routerFitness;

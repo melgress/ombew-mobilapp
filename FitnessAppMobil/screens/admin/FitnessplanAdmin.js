@@ -10,6 +10,7 @@ export default class FitnessplanAdmin extends Component {
     this._deleteEvent = this._deleteEvent.bind(this);
     this.loadEvents = this.loadEvents.bind(this);
     this.state = {
+      updatedEvents: [],
       events: [],
       eventsFormatted: {},
       search: "",
@@ -69,10 +70,10 @@ export default class FitnessplanAdmin extends Component {
       });
   };
 
-  //to do: delete by unique id
   _deleteEvent(id) {
-    const { eventsFormatted } = this.state;
-    const events = this.state;
+    const { eventsFormatted } = this.state.eventsFormatted;
+    const events = this.state.events;
+    const updatedEvents = this.state.updatedEvents;
     fetch("http://192.168.178.23:9000/api/fitnessevents/" + id, {
       method: "DELETE",
       headers: {
@@ -90,7 +91,7 @@ export default class FitnessplanAdmin extends Component {
       .catch((error) => {
         throw error;
       });
-    this.forceUpdate();
+    this.loadEvents();
     console.log("Deleted");
   }
 
