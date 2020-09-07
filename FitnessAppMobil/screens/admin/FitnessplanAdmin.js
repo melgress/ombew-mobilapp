@@ -32,16 +32,6 @@ export default class FitnessplanAdmin extends Component {
       search: text,
     });
   };
-  filterCalendar = () => {
-    const events = this.state.events;
-    const search = this.state.search;
-    this.setState({
-      events: events.filter((event) => event.name == search),
-    });
-    return this.state.events;
-    console.log(this.state.events);
-    console.log(this.state.search);
-  };
 
   loadEvents = (day) => {
     //Charge les items du mois
@@ -52,6 +42,7 @@ export default class FitnessplanAdmin extends Component {
         return events;
       })
       .then((events) => {
+        this.setState({ events: events });
         var eventsFormatted = {};
         if (events.length) {
           events.map((event) => {
@@ -84,7 +75,6 @@ export default class FitnessplanAdmin extends Component {
       .then(() => {
         this.setState({
           events: events.filter((event) => event.id !== id),
-          // eventsFormatted: eventsFormatted.ke
         });
         return;
       })
@@ -94,6 +84,38 @@ export default class FitnessplanAdmin extends Component {
     this.loadEvents();
     console.log("Deleted");
   }
+
+  handleSearch = (text) => {
+    if (text) {
+      const newData = this.state.events.filter(function (item) {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      this.setState({
+        events: newData,
+        search: text,
+      });
+      var eventsFormatted = {};
+      if (this.state.events.length) {
+        this.state.events.map((event) => {
+          let day = event.date; //.toDate().toISOString().split("T")[0]; // Format to YYYY-MM-DD
+
+          if (eventsFormatted[day]) {
+            eventsFormatted[day].push(event);
+          } else {
+            eventsFormatted[day] = [event];
+          }
+        });
+        this.setState({
+          eventsFormatted: eventsFormatted,
+        });
+      }
+    } else {
+      this.setState({ search: "" });
+      this.loadEvents();
+    }
+  };
 
   renderItem(item) {
     // console.log(item.name);
@@ -139,6 +161,15 @@ export default class FitnessplanAdmin extends Component {
 
     return (
       <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
+        <TextInput
+          style={{ borderWidth: 2 }}
+          placeholder="Nach Kurs suchen..."
+          autoCorrect={false}
+          onChangeText={(text) => {
+            this.handleSearch(text);
+          }}
+          value={this.state.search}
+        />
         <Button
           title="Add"
           onPress={() => this.props.navigation.navigate("AddToCalendar")}

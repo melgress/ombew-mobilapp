@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Button, TextInput } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { SearchBar } from "react-native-elements";
+import filter from "lodash";
 
 export default class Fitnessplan extends Component {
   constructor(props) {
     super(props);
+
+    //this.filterCalendar = this.filterCalendar.bind(this);
+    // this.searchText = this.searchText.bind(this);
 
     this.loadEvents = this.loadEvents.bind(this);
     this.state = {
@@ -31,15 +35,36 @@ export default class Fitnessplan extends Component {
       search: text,
     });
   };
-  filterCalendar = () => {
-    const events = this.state.events;
-    const search = this.state.search;
-    this.setState({
-      events: events.filter((event) => event.name == search),
-    });
-    return this.state.events;
-    console.log(this.state.events);
-    console.log(this.state.search);
+  handleSearch = (text) => {
+    if (text) {
+      const newData = this.state.events.filter(function (item) {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      this.setState({
+        events: newData,
+        search: text,
+      });
+      var eventsFormatted = {};
+      if (this.state.events.length) {
+        this.state.events.map((event) => {
+          let day = event.date; //.toDate().toISOString().split("T")[0]; // Format to YYYY-MM-DD
+
+          if (eventsFormatted[day]) {
+            eventsFormatted[day].push(event);
+          } else {
+            eventsFormatted[day] = [event];
+          }
+        });
+        this.setState({
+          eventsFormatted: eventsFormatted,
+        });
+      }
+    } else {
+      this.setState({ search: "" });
+      this.loadEvents();
+    }
   };
 
   loadEvents = (day) => {
@@ -51,6 +76,7 @@ export default class Fitnessplan extends Component {
         return events;
       })
       .then((events) => {
+        this.setState({ events: events });
         var eventsFormatted = {};
         if (events.length) {
           events.map((event) => {
@@ -66,36 +92,12 @@ export default class Fitnessplan extends Component {
             eventsFormatted: eventsFormatted,
           });
           console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
+          console.log(this.state.events);
         }
       });
   };
 
-  _deleteEvent(id) {
-    const { eventsFormatted } = this.state;
-    const events = this.state;
-    fetch("http://192.168.178.23:9000/api/fitnessevents/" + id, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then(() => {
-        this.setState({
-          events: events.filter((event) => event.id !== id),
-        });
-        return;
-      })
-      .catch((error) => {
-        throw error;
-      });
-    this.forceUpdate();
-    console.log("Deleted");
-  }
-
   renderItem(item) {
-    // console.log(item.name);
-    const height = "150";
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
         <Text>{item.name}</Text>
@@ -123,6 +125,15 @@ export default class Fitnessplan extends Component {
 
     return (
       <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
+        <TextInput
+          style={{ borderWidth: 2 }}
+          placeholder="Nach Kurs suchen..."
+          autoCorrect={false}
+          onChangeText={(text) => {
+            this.handleSearch(text);
+          }}
+          value={this.state.search}
+        />
         <Agenda
           //style={styles.calendar}
           selected={"2020-09-04"}

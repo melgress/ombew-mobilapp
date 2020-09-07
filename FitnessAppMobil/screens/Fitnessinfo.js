@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, TextInput } from "react-native";
 import { ListItem } from "react-native-elements";
 
 //import courseList from "./data/courses.json";
@@ -10,6 +10,7 @@ class Fitnessinfo extends Component {
 
     this.state = {
       courseList: [],
+      text: "",
     };
   }
 
@@ -25,12 +26,30 @@ class Fitnessinfo extends Component {
         throw error;
       });
   }
+  handleSearch = (text) => {
+    const newData = this.state.courseList.filter(function (item) {
+      const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      courseList: newData,
+      text: text,
+    });
+  };
 
   render() {
     const courseList = this.state.courseList;
 
     return (
       <ScrollView>
+        <TextInput
+          placeholder="Type Here..."
+          onChangeText={(text) => {
+            this.handleSearch(text);
+          }}
+          //value={search}
+        />
         {courseList.map((course) => (
           <ListItem key={course.id} bottomDivider>
             <ListItem.Content>
