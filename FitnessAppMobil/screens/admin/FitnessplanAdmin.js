@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, Button, TextInput } from "react-native";
 import { Agenda } from "react-native-calendars";
-import { SearchBar } from "react-native-elements";
 
 export default class FitnessplanAdmin extends Component {
   constructor(props) {
@@ -10,7 +9,6 @@ export default class FitnessplanAdmin extends Component {
     this._deleteEvent = this._deleteEvent.bind(this);
     this.loadEvents = this.loadEvents.bind(this);
     this.state = {
-      updatedEvents: [],
       events: [],
       eventsFormatted: {},
       search: "",
@@ -27,18 +25,12 @@ export default class FitnessplanAdmin extends Component {
   componentWillUnmount() {
     this.focusListener();
   }
-  updateSearch = (text) => {
-    this.setState({
-      search: text,
-    });
-  };
 
   loadEvents = (day) => {
-    //Charge les items du mois
     fetch("http://192.168.178.23:9000/api/fitnessevents")
       .then((response) => response.json())
       .then((events) => {
-        console.log(`events: ${JSON.stringify(events)}`);
+        //console.log(`events: ${JSON.stringify(events)}`);
         return events;
       })
       .then((events) => {
@@ -56,7 +48,7 @@ export default class FitnessplanAdmin extends Component {
           this.setState({
             eventsFormatted: eventsFormatted,
           });
-          console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
+          // console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
         }
       });
   };
@@ -64,7 +56,6 @@ export default class FitnessplanAdmin extends Component {
   _deleteEvent(id) {
     const { eventsFormatted } = this.state.eventsFormatted;
     const events = this.state.events;
-    const updatedEvents = this.state.updatedEvents;
     fetch("http://192.168.178.23:9000/api/fitnessevents/" + id, {
       method: "DELETE",
       headers: {
@@ -157,12 +148,11 @@ export default class FitnessplanAdmin extends Component {
 
   render() {
     const eventsFormatted = this.state.eventsFormatted;
-    const { search } = this.state.search;
 
     return (
       <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
         <TextInput
-          style={{ borderWidth: 2 }}
+          style={{ borderWidth: 1 }}
           placeholder="Nach Kurs suchen..."
           autoCorrect={false}
           onChangeText={(text) => {
@@ -178,16 +168,16 @@ export default class FitnessplanAdmin extends Component {
           //style={styles.contentContainer}
           selected={"2020-09-04"}
           items={eventsFormatted}
-          loadItemsForMonth={this.loadEvents}
+          loadItemsForMonth={this.loadEvents.bind(this)}
           renderItem={this.renderItem.bind(this)}
           // renderDay={this.renderDay.bind(this)}
           renderEmptyData={() => null}
           renderEmptyDate={this.renderEmptyDate.bind(this)}
           //loadEvents={(day) => this.loadEvents(day)}
           events={this.state.eventsFormatted}
-          onPressEvent={(event) =>
+          /*onPressEvent={(event) =>
             this.props.navigation.navigate("Fitnessinfo", { event })
-          }
+          }*/
         />
       </View>
     );

@@ -111,7 +111,7 @@ class EditCalendar extends Component {
           //placeholder="2020-09-04"
           defaultValue={this.state.date}
         />
-        <Button title="Add" onPress={() => this.handleSubmit()}></Button>
+        <Button title="Edit" onPress={() => this.handleSubmit()}></Button>
       </ScrollView>
     );
   }

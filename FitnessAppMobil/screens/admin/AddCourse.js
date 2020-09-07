@@ -52,7 +52,7 @@ export default class AddCourse extends Component {
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
-    this.props.navigation.goBack("Fitnessinfo");
+    this.props.navigation.goBack("FitnessinfoAdmin");
   }
 
   render() {

@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, Text, Button, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import { Agenda } from "react-native-calendars";
 import { SearchBar } from "react-native-elements";
 import filter from "lodash";
@@ -72,7 +79,7 @@ export default class Fitnessplan extends Component {
     fetch("http://192.168.178.23:9000/api/fitnessevents")
       .then((response) => response.json())
       .then((events) => {
-        console.log(`events: ${JSON.stringify(events)}`);
+        // console.log(`events: ${JSON.stringify(events)}`);
         return events;
       })
       .then((events) => {
@@ -91,8 +98,8 @@ export default class Fitnessplan extends Component {
           this.setState({
             eventsFormatted: eventsFormatted,
           });
-          console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
-          console.log(this.state.events);
+          // console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
+          // console.log(this.state.events);
         }
       });
   };
@@ -112,10 +119,10 @@ export default class Fitnessplan extends Component {
       </View>
     );
   }
-  /* renderDay() {
+  /*renderDay(day) {
     return (
       <View>
-        <Button title="Add"></Button>
+        <Text>{item.day}</Text>
       </View>
     );
   }*/
@@ -126,7 +133,7 @@ export default class Fitnessplan extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
         <TextInput
-          style={{ borderWidth: 2 }}
+          style={{ borderWidth: 1 }}
           placeholder="Nach Kurs suchen..."
           autoCorrect={false}
           onChangeText={(text) => {
@@ -134,15 +141,19 @@ export default class Fitnessplan extends Component {
           }}
           value={this.state.search}
         />
+
         <Agenda
           //style={styles.calendar}
           selected={"2020-09-04"}
           items={eventsFormatted}
           loadItemsForMonth={this.loadEvents}
           renderItem={this.renderItem.bind(this)}
-          // renderDay={this.renderDay.bind(this)}
+          //renderDay={this.renderDay.bind(this)}
           renderEmptyData={() => null}
           renderEmptyDate={this.renderEmptyDate.bind(this)}
+          onDayPress={(day) => {
+            console.log("day pressed");
+          }}
           //loadEvents={(day) => this.loadEvents(day)}
           events={this.state.eventsFormatted}
           onPressEvent={(event) =>

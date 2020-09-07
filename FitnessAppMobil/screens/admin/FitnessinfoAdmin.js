@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, TextInput } from "react-native";
 import { ListItem, Button } from "react-native-elements";
 
 class FitnessinfoAdmin extends Component {
@@ -9,12 +9,17 @@ class FitnessinfoAdmin extends Component {
     this._deleteCourse = this._deleteCourse.bind(this);
     this.state = {
       courseList: [],
+      search: "",
     };
   }
 
   componentDidMount() {
     // fetch("http://192.168.0.176:9000/api/fitness")
     //fetch("http://192.168.178.23:9000/api/fitness")
+    this.loadCourses();
+  }
+
+  loadCourses() {
     fetch("http://192.168.178.23:9000/api/fitness")
       .then((response) => response.json())
       .then((data) => {
@@ -34,6 +39,23 @@ class FitnessinfoAdmin extends Component {
         });
     });
   }
+
+  handleSearch = (text) => {
+    if (text) {
+      const newData = this.state.courseList.filter(function (item) {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      this.setState({
+        courseList: newData,
+        search: text,
+      });
+    } else {
+      this.setState({ search: "" });
+      this.loadCourses();
+    }
+  };
 
   _deleteCourse(id) {
     const { courseList } = this.state;
@@ -62,6 +84,14 @@ class FitnessinfoAdmin extends Component {
 
     return (
       <ScrollView>
+        <TextInput
+          style={{ borderWidth: 1 }}
+          placeholder="Nach Kurs suchen..."
+          onChangeText={(text) => {
+            this.handleSearch(text);
+          }}
+          //value={search}
+        />
         <Button
           title="Add"
           onPress={() => this.props.navigation.navigate("AddCourse")}

@@ -10,13 +10,16 @@ class Fitnessinfo extends Component {
 
     this.state = {
       courseList: [],
-      text: "",
+      search: "",
     };
   }
 
   componentDidMount() {
     // fetch("http://192.168.0.176:9000/api/fitness")
     //fetch("http://192.168.178.23:9000/api/fitness")
+    this.loadCourses();
+  }
+  loadCourses() {
     fetch("http://192.168.178.23:9000/api/fitness")
       .then((response) => response.json())
       .then((data) => {
@@ -27,15 +30,20 @@ class Fitnessinfo extends Component {
       });
   }
   handleSearch = (text) => {
-    const newData = this.state.courseList.filter(function (item) {
-      const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    this.setState({
-      courseList: newData,
-      text: text,
-    });
+    if (text) {
+      const newData = this.state.courseList.filter(function (item) {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      this.setState({
+        courseList: newData,
+        search: text,
+      });
+    } else {
+      this.setState({ search: "" });
+      this.loadCourses();
+    }
   };
 
   render() {
@@ -44,7 +52,8 @@ class Fitnessinfo extends Component {
     return (
       <ScrollView>
         <TextInput
-          placeholder="Type Here..."
+          style={{ borderWidth: 1 }}
+          placeholder="Nach Kurs suchen..."
           onChangeText={(text) => {
             this.handleSearch(text);
           }}
