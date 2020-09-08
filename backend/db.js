@@ -8,7 +8,7 @@ var con = mysql.createConnection({
   host: "192.168.178.23",
   user: "admin",
   password: "admin",
-  database: "Webmo",
+  database: "WebmoMobile",
 });
 
 con.connect((err) => {
