@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
-import { View, TextInput, ScrollView } from "react-native";
+import { View, TextInput, ScrollView, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 
-//import courseList from "./data/courses.json";
-
-class EditCalendar extends Component {
+export default class EditCalendar extends Component {
   constructor(props) {
     super(props);
     this.onChangeDate = this.onChangeDate.bind(this);
@@ -19,16 +17,26 @@ class EditCalendar extends Component {
     this.controller;
   }
   componentDidMount() {
-    // fetch("http://192.168.0.176:9000/api/fitness")
-    //fetch("http://192.168.178.23:9000/api/fitness")
-    fetch("http://192.168.178.23:9000/api/dropdown")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ items: data });
+    const url = this.props.route.params.url;
+    if (!this.props.route.params.en) {
+      fetch(url + "/api/dropdown")
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ items: data });
+        });
+      this.setState({
+        date: this.props.route.params.date,
       });
-    this.setState({
-      date: this.props.route.params.date,
-    });
+    } else {
+      fetch(url + "/dropdown/en")
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ items: data });
+        });
+      this.setState({
+        date: this.props.route.params.date,
+      });
+    }
   }
 
   onChangeDate = (text) => {
@@ -38,11 +46,9 @@ class EditCalendar extends Component {
   };
 
   handleSubmit() {
-    //id = this.props.route.params.course.id;
-    fetch(
-      "http://192.168.178.23:9000/api/fitnessevent/" +
-        this.props.route.params.id,
-      {
+    const url = this.props.route.params.url;
+    if (!this.props.route.params.en) {
+      fetch(url + "/fitnessevent/" + this.props.route.params.id, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -52,24 +58,35 @@ class EditCalendar extends Component {
           date: this.state.date,
           name: this.state.name,
         }),
-      }
-    )
-      .then((res) => res.json())
-      .catch((error) => {
-        throw error;
-      });
-    this.props.navigation.goBack("FitnessplanAdmin");
-    console.log("Edited");
+      })
+        .then((res) => res.json())
+        .catch((error) => {
+          throw error;
+        });
+      this.props.navigation.goBack("FitnessplanAdmin");
+      console.log("Bearbeitet");
+    } else {
+      fetch(url + "/fitnessevent/en/" + this.props.route.params.id, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: this.state.date,
+          name: this.state.name,
+        }),
+      })
+        .then((res) => res.json())
+        .catch((error) => {
+          throw error;
+        });
+      this.props.navigation.goBack("FitnessplanAdmin");
+      console.log("Edited");
+    }
   }
 
   render() {
-    const item = (
-      <View>
-        {this.state.items.map((item) => (
-          <View key={item.value}></View>
-        ))}
-      </View>
-    );
     return (
       <ScrollView>
         <DropDownPicker
@@ -83,16 +100,11 @@ class EditCalendar extends Component {
               callback
             );
           }}
-          //defaultValue={this.state.countries}
-          //containerStyle={{ flex:  }}
           dropDownMaxHeight={300}
           style={{ backgroundColor: "#fafafa" }}
           itemStyle={{
             justifyContent: "flex-start",
           }}
-          //containerStyle={{ height: 100 }}
-          //style={{ paddingVertical: 100 }}
-          // dropDownStyle={{ backgroundColor: "#fafafa" }}
           dropDownStyle={{ marginTop: 2 }}
           onChangeItem={(item) =>
             this.setState({
@@ -108,7 +120,6 @@ class EditCalendar extends Component {
             width: 300,
           }}
           onChangeText={(text) => this.onChangeDate(text)}
-          //placeholder="2020-09-04"
           defaultValue={this.state.date}
         />
         <Button title="Edit" onPress={() => this.handleSubmit()}></Button>
@@ -117,4 +128,52 @@ class EditCalendar extends Component {
   }
 }
 
-export default EditCalendar;
+const styles = StyleSheet.create({
+  header: {
+    height: 60,
+    backgroundColor: "orange",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+  },
+  contentContainer: {
+    backgroundColor: "purple",
+  },
+  item: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: "grey",
+    alignItems: "center",
+  },
+  marginLeft: {
+    marginLeft: 5,
+  },
+  menu: {
+    width: 20,
+    height: 2,
+    backgroundColor: "#111",
+    margin: 2,
+    borderRadius: 3,
+  },
+  text: {
+    marginVertical: 30,
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+
+  textInput: {
+    width: "90%",
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 30,
+    borderColor: "gray",
+    borderBottomWidth: 2,
+    fontSize: 16,
+  },
+  Button: {},
+});

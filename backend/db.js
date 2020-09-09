@@ -2,9 +2,7 @@
 const mysql = require("mysql");
 
 var con = mysql.createConnection({
-  //host muss für App mit der lokalen IP angelegt werden
-  //host: "192.168.0.176",
-  //host: "localhost",
+  //hier muss die individuelle IP des Laptops, mit dem der Server gestartet wurde, angegeben werden
   host: "192.168.178.23",
   user: "admin",
   password: "admin",

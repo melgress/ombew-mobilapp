@@ -2,8 +2,6 @@ const express = require("express");
 const db = require("../db.js");
 const routerCalendar = express.Router();
 
-//Creating GET Router to fetch all the learner details from the MySQL Database
-
 //Creating GET Router to fetch all the events from Database for the Calendar (Agenda)
 routerCalendar.get("/fitnessevents", (req, res) => {
   db.query("SELECT * from agenda", (err, rows) => {

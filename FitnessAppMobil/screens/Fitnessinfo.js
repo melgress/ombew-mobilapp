@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, ScrollView, TextInput } from "react-native";
 import { ListItem } from "react-native-elements";
 
-//import courseList from "./data/courses.json";
-
-class Fitnessinfo extends Component {
+export default class Fitnessinfo extends Component {
   constructor(props) {
     super(props);
 
@@ -15,19 +13,29 @@ class Fitnessinfo extends Component {
   }
 
   componentDidMount() {
-    // fetch("http://192.168.0.176:9000/api/fitness")
-    //fetch("http://192.168.178.23:9000/api/fitness")
     this.loadCourses();
   }
   loadCourses() {
-    fetch("http://192.168.178.23:9000/api/fitness")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ courseList: data });
-      })
-      .catch((error) => {
-        throw error;
-      });
+    const url = this.props.route.params.url;
+    if (!this.props.route.params.en) {
+      fetch(url + "/fitness")
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ courseList: data });
+        })
+        .catch((error) => {
+          throw error;
+        });
+    } else {
+      fetch(url + "/fitness/en")
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ courseList: data });
+        })
+        .catch((error) => {
+          throw error;
+        });
+    }
   }
   handleSearch = (text) => {
     if (text) {
@@ -49,30 +57,55 @@ class Fitnessinfo extends Component {
   render() {
     const courseList = this.state.courseList;
 
-    return (
-      <ScrollView>
-        <TextInput
-          style={{ borderWidth: 1 }}
-          placeholder="Nach Kurs suchen..."
-          onChangeText={(text) => {
-            this.handleSearch(text);
-          }}
-          //value={search}
-        />
-        {courseList.map((course) => (
-          <ListItem key={course.id} bottomDivider>
-            <ListItem.Content>
-              <ListItem.Title>{"Name"}</ListItem.Title>
-              <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
-              <ListItem.Title>{"Preis"}</ListItem.Title>
-              <ListItem.Subtitle>{course.price}</ListItem.Subtitle>
-              <ListItem.Title>{"Beschreibung"}</ListItem.Title>
-              <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        ))}
-      </ScrollView>
-    );
+    if (this.props.route.params.en == false) {
+      return (
+        <ScrollView>
+          <TextInput
+            style={{ borderWidth: 1 }}
+            placeholder="Nach Kurs suchen..."
+            onChangeText={(text) => {
+              this.handleSearch(text);
+            }}
+          />
+          {courseList.map((course) => (
+            <ListItem key={course.id} bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>{"Name"}</ListItem.Title>
+                <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
+                <ListItem.Title>{"Preis"}</ListItem.Title>
+                <ListItem.Subtitle>{course.price}</ListItem.Subtitle>
+                <ListItem.Title>{"Beschreibung"}</ListItem.Title>
+                <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          ))}
+        </ScrollView>
+      );
+    } else {
+      return (
+        <ScrollView>
+          <TextInput
+            style={{ borderWidth: 1 }}
+            placeholder="Search for a course..."
+            onChangeText={(text) => {
+              this.handleSearch(text);
+            }}
+          />
+          {courseList.map((course) => (
+            <ListItem key={course.id} bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>{"Name"}</ListItem.Title>
+                <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
+                <ListItem.Title>{"Price"}</ListItem.Title>
+                <ListItem.Subtitle>{course.price}</ListItem.Subtitle>
+                <ListItem.Title>{"Description"}</ListItem.Title>
+                <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          ))}
+        </ScrollView>
+      );
+    }
   }
 }
 
@@ -113,31 +146,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
   },
-  text1: {
-    textAlign: "left",
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
-    // marginLeft: "auto",
-  },
-  text2: {
-    textAlign: "center",
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "blue",
-    marginLeft: "auto",
-  },
-  text3: {
-    textAlign: "right",
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "orange",
-    marginLeft: "auto",
-  },
-
   textInput: {
     width: "90%",
     marginLeft: 10,
@@ -147,27 +155,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     fontSize: 16,
   },
-  modalView: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  touchableHighlight: {
-    backgroundColor: "white",
-    marginVertical: 10,
-    alignSelf: "stretch",
-    alignItems: "center",
-  },
 });
-
-export default Fitnessinfo;
-
-/*
-{this.state.courseList.map((fitness) => (
-                <tr key={fitness.id}>
-                  <td>{fitness.name} </td>
-                  <td>{fitness.price}</td>
-                  <td>{fitness.description}</td>
-                </tr>
-                */

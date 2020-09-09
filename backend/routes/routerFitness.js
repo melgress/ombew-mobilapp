@@ -45,7 +45,6 @@ routerFitness.get("/fitness/en/:id", (req, res) => {
 //add a course
 routerFitness.post("/addCourse", (req, res) => {
   let data = {
-    date: req.body.date,
     name: req.body.name,
     price: req.body.price,
     description: req.body.description,
@@ -60,7 +59,6 @@ routerFitness.post("/addCourse", (req, res) => {
 //For English: add a course
 routerFitness.post("/addCourse/en", (req, res) => {
   let data = {
-    date: req.body.date,
     name: req.body.name,
     price: req.body.price,
     description: req.body.description,
@@ -75,7 +73,6 @@ routerFitness.post("/addCourse/en", (req, res) => {
 //update a course
 routerFitness.put("/fitness/:id", function (req, res) {
   let data = {
-    date: req.body.date,
     name: req.body.name,
     price: req.body.price,
     description: req.body.description,
@@ -97,7 +94,6 @@ routerFitness.put("/fitness/:id", function (req, res) {
 //For English: update a course
 routerFitness.put("/fitness/en/:id", function (req, res) {
   let data = {
-    date: req.body.date,
     name: req.body.name,
     price: req.body.price,
     description: req.body.description,

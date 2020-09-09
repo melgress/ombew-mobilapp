@@ -27,53 +27,102 @@ export default class FitnessplanAdmin extends Component {
   }
 
   loadEvents = (day) => {
-    fetch("http://192.168.178.23:9000/api/fitnessevents")
-      .then((response) => response.json())
-      .then((events) => {
-        //console.log(`events: ${JSON.stringify(events)}`);
-        return events;
-      })
-      .then((events) => {
-        this.setState({ events: events });
-        var eventsFormatted = {};
-        if (events.length) {
-          events.map((event) => {
-            let day = event.date; //.toDate().toISOString().split("T")[0]; // Format to YYYY-MM-DD
-            if (eventsFormatted[day]) {
-              eventsFormatted[day].push(event);
-            } else {
-              eventsFormatted[day] = [event];
-            }
-          });
-          this.setState({
-            eventsFormatted: eventsFormatted,
-          });
-          // console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
-        }
-      });
+    const url = this.props.route.params.url;
+    if (!this.props.route.params.en) {
+      fetch(url + "/fitnessevents")
+        .then((response) => response.json())
+        .then((events) => {
+          //console.log(`events: ${JSON.stringify(events)}`);
+          return events;
+        })
+        .then((events) => {
+          this.setState({ events: events });
+          var eventsFormatted = {};
+          if (events.length) {
+            events.map((event) => {
+              let day = event.date; //.toDate().toISOString().split("T")[0]; // Format to YYYY-MM-DD
+              if (eventsFormatted[day]) {
+                eventsFormatted[day].push(event);
+              } else {
+                eventsFormatted[day] = [event];
+              }
+            });
+            this.setState({
+              eventsFormatted: eventsFormatted,
+            });
+            // console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
+          }
+        });
+    } else {
+      fetch(url + "/fitnessevents/en")
+        .then((response) => response.json())
+        .then((events) => {
+          //console.log(`events: ${JSON.stringify(events)}`);
+          return events;
+        })
+        .then((events) => {
+          this.setState({ events: events });
+          var eventsFormatted = {};
+          if (events.length) {
+            events.map((event) => {
+              let day = event.date; //.toDate().toISOString().split("T")[0]; // Format to YYYY-MM-DD
+              if (eventsFormatted[day]) {
+                eventsFormatted[day].push(event);
+              } else {
+                eventsFormatted[day] = [event];
+              }
+            });
+            this.setState({
+              eventsFormatted: eventsFormatted,
+            });
+            // console.log(`eventsFormatted: ${JSON.stringify(eventsFormatted)}`);
+          }
+        });
+    }
   };
 
   _deleteEvent(id) {
-    const { eventsFormatted } = this.state.eventsFormatted;
     const events = this.state.events;
-    fetch("http://192.168.178.23:9000/api/fitnessevents/" + id, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then(() => {
-        this.setState({
-          events: events.filter((event) => event.id !== id),
-        });
-        return;
+    const url = this.props.route.params.url;
+    if (!this.props.route.params.en) {
+      fetch(url + "/fitnessevents/" + id, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => {
-        throw error;
-      });
-    this.loadEvents();
-    console.log("Deleted");
+        .then(() => {
+          this.setState({
+            events: events.filter((event) => event.id !== id),
+          });
+          return;
+        })
+        .catch((error) => {
+          throw error;
+        });
+      this.loadEvents();
+      console.log("Gelöscht");
+    } else {
+      fetch(url + "/fitnessevents/en/" + id, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then(() => {
+          this.setState({
+            events: events.filter((event) => event.id !== id),
+          });
+          return;
+        })
+        .catch((error) => {
+          throw error;
+        });
+      this.loadEvents();
+      console.log("Deleted");
+    }
   }
 
   handleSearch = (text) => {
@@ -110,25 +159,49 @@ export default class FitnessplanAdmin extends Component {
 
   renderItem(item) {
     // console.log(item.name);
-    return (
-      <View>
-        <Text>{item.name}</Text>
-        <Button
-          title="Edit"
-          onPress={() =>
-            this.props.navigation.navigate("EditCalendar", {
-              id: item.id,
-              name: item.name,
-              date: item.date,
-            })
-          }
-        ></Button>
-        <Button
-          title="Delete"
-          onPress={() => this._deleteEvent(item.id)}
-        ></Button>
-      </View>
-    );
+    if (!this.props.route.params.en) {
+      return (
+        <View>
+          <Text>{item.name}</Text>
+          <Button
+            title="Bearbeiten"
+            onPress={() =>
+              this.props.navigation.navigate("EditCalendar", {
+                id: item.id,
+                name: item.name,
+                date: item.date,
+              })
+            }
+          ></Button>
+          <Button
+            title="Löschen"
+            onPress={() => this._deleteEvent(item.id)}
+          ></Button>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Text>{item.name}</Text>
+          <Button
+            title="Edit"
+            onPress={() =>
+              this.props.navigation.navigate("EditCalendar", {
+                id: item.id,
+                name: item.name,
+                date: item.date,
+                url: this.props.route.params.url,
+                en: this.props.route.params.en,
+              })
+            }
+          ></Button>
+          <Button
+            title="Delete"
+            onPress={() => this._deleteEvent(item.id)}
+          ></Button>
+        </View>
+      );
+    }
   }
 
   renderEmptyDate() {
@@ -138,49 +211,74 @@ export default class FitnessplanAdmin extends Component {
       </View>
     );
   }
-  /* renderDay() {
-    return (
-      <View>
-        <Button title="Add"></Button>
-      </View>
-    );
-  }*/
 
   render() {
     const eventsFormatted = this.state.eventsFormatted;
-
-    return (
-      <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
-        <TextInput
-          style={{ borderWidth: 1 }}
-          placeholder="Nach Kurs suchen..."
-          autoCorrect={false}
-          onChangeText={(text) => {
-            this.handleSearch(text);
-          }}
-          value={this.state.search}
-        />
-        <Button
-          title="Add"
-          onPress={() => this.props.navigation.navigate("AddToCalendar")}
-        ></Button>
-        <Agenda
-          //style={styles.contentContainer}
-          selected={"2020-09-04"}
-          items={eventsFormatted}
-          loadItemsForMonth={this.loadEvents.bind(this)}
-          renderItem={this.renderItem.bind(this)}
-          // renderDay={this.renderDay.bind(this)}
-          renderEmptyData={() => null}
-          renderEmptyDate={this.renderEmptyDate.bind(this)}
-          //loadEvents={(day) => this.loadEvents(day)}
-          events={this.state.eventsFormatted}
-          /*onPressEvent={(event) =>
-            this.props.navigation.navigate("Fitnessinfo", { event })
-          }*/
-        />
-      </View>
-    );
+    if (!this.props.route.params.en) {
+      return (
+        <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
+          <TextInput
+            style={{ borderWidth: 1 }}
+            placeholder="Nach Kurs suchen..."
+            autoCorrect={false}
+            onChangeText={(text) => {
+              this.handleSearch(text);
+            }}
+            value={this.state.search}
+          />
+          <Button
+            title="Kurs zum Kalendar hinzufügen"
+            onPress={() =>
+              this.props.navigation.navigate("AddToCalendar", {
+                en: this.props.route.params.en,
+                url: this.props.route.params.url,
+              })
+            }
+          ></Button>
+          <Agenda
+            //style={styles.contentContainer}
+            items={eventsFormatted}
+            loadItemsForMonth={this.loadEvents.bind(this)}
+            renderItem={this.renderItem.bind(this)}
+            renderEmptyData={() => null}
+            renderEmptyDate={this.renderEmptyDate.bind(this)}
+            events={this.state.eventsFormatted}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
+          <TextInput
+            style={{ borderWidth: 1 }}
+            placeholder="Search for a course..."
+            autoCorrect={false}
+            onChangeText={(text) => {
+              this.handleSearch(text);
+            }}
+            value={this.state.search}
+          />
+          <Button
+            title="Add course to calendar"
+            onPress={() =>
+              this.props.navigation.navigate("AddToCalendar", {
+                en: this.props.route.params.en,
+                url: this.props.route.params.url,
+              })
+            }
+          ></Button>
+          <Agenda
+            //style={styles.contentContainer}
+            items={eventsFormatted}
+            loadItemsForMonth={this.loadEvents.bind(this)}
+            renderItem={this.renderItem.bind(this)}
+            renderEmptyData={() => null}
+            renderEmptyDate={this.renderEmptyDate.bind(this)}
+            events={this.state.eventsFormatted}
+          />
+        </View>
+      );
+    }
   }
 }
 const styles = StyleSheet.create({
@@ -267,13 +365,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-/*
-  <SearchBar
-          placeholder="Type Here..."
-          onChangeText={(text) => {
-            this.updateSearch(text);
-          }}
-          value={search}
-        />
-         <Button title="Search" onPress={() => this.filterCalendar()}></Button>
-*/
