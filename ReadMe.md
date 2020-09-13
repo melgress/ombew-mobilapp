@@ -17,3 +17,6 @@ mysql>FLUSH PRIVILEGES;
 Anschließend wird das Backend gestartet (cd backend > node index.js) und danach das Frontend(cd FitnessAppMobil > npm start)
 
 Nun hat man die Möglichkeit auszuwählen, wie die App gestartet werden soll. Am einfachsten ist es die App "Expo" auf sein Android / IOS Gerät zu laden und mit dieser den generierten QR-Code zu scannen. Alternativ kann man einen Android emulator / IOS simulator oder ein echtes Endgerät zum Start verwenden. Es gibt die Möglichkeit die App im Browser zu starten. Hierbei werden aber nicht alle Komponenten richtig ausgeführt, z.B. der Kalendar, da diese nur für Mobilgeräte optimiert sind.
+
+Sonstiges:
+Da die App internationalisiert ist und für Englisch und Deutsch unterschiedliche Tabellen der Datenbank angesprochen werden, muss beim Bearbeiten der Kurse auf Deutsch, bzw. Englisch natürlich sichergestellt werden, dass diese Änderungen auch für die jeweils andere Sprache eingetragen wird, damit in beiden Sprachen alles synchron ist.
