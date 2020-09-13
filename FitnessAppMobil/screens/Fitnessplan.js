@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
-import { styles, buttons } from "./styles";
+import { styles, buttons } from "../../assets/styles";
 
 export default class Fitnessplan extends Component {
   constructor(props) {

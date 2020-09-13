@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ScrollView, TextInput } from "react-native";
 import { ListItem } from "react-native-elements";
-import { styles, buttons } from "./styles";
+import { styles, buttons } from "../../assets/styles";
 
 export default class Fitnessinfo extends Component {
   constructor(props) {

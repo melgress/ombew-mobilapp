@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
-import { styles, buttons } from '../styles';
+import { styles, buttons } from "../../assets/styles";
 
 export default class AddCourse extends Component {
   constructor(props) {
@@ -77,23 +77,25 @@ export default class AddCourse extends Component {
   render() {
     if (!this.props.route.params.en) {
       return (
-        <View
-          style={styles.layout}
-        >
+        <View style={styles.layout}>
           <Text style={styles.text2}>Kurs hinzufügen</Text>
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             placeholder="Name"
             onChangeText={(text) => this.onChangeName(text)}
           />
-          <TextInput style={styles.textInput2}
-          placeholder="Preis"
+          <TextInput
+            style={styles.textInput2}
+            placeholder="Preis"
             onChangeText={(text) => this.onChangePrice(text)}
           />
-          <TextInput style={styles.textInput2}
-          placeholder="Beschreibung"
+          <TextInput
+            style={styles.textInput2}
+            placeholder="Beschreibung"
             onChangeText={(text) => this.onChangeDescription(text)}
           />
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() => this.handleSubmit()}
           >
             <Text style={buttons.buttontext}>Hinzufügen</Text>
@@ -102,24 +104,27 @@ export default class AddCourse extends Component {
       );
     } else {
       return (
-        <View
-          style={styles.layout}
-        >
+        <View style={styles.layout}>
           <Text style={styles.text2}>Add a course</Text>
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             placeholder="name"
             onChangeText={(text) => this.onChangeName(text)}
           />
-          <TextInput style={styles.textInput2}
-          placeholder="price"
+          <TextInput
+            style={styles.textInput2}
+            placeholder="price"
             onChangeText={(text) => this.onChangePrice(text)}
           />
-          <TextInput style={styles.textInput2}
-          placeholder="description"
+          <TextInput
+            style={styles.textInput2}
+            placeholder="description"
             onChangeText={(text) => this.onChangeDescription(text)}
           />
-          <TouchableOpacity style={buttons.button1}
-          onPress={() => this.handleSubmit()}>
+          <TouchableOpacity
+            style={buttons.button1}
+            onPress={() => this.handleSubmit()}
+          >
             <Text style={buttons.buttontext}>Add</Text>
           </TouchableOpacity>
         </View>
@@ -127,4 +132,3 @@ export default class AddCourse extends Component {
     }
   }
 }
-

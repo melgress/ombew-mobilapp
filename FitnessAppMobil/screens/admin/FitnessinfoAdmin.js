@@ -7,7 +7,7 @@ import {
   Text,
 } from "react-native";
 import { ListItem, Button } from "react-native-elements";
-import { styles, buttons } from "../styles";
+import { styles, buttons } from "../../assets/styles";
 
 export default class FitnessinfoAdmin extends Component {
   constructor(props) {

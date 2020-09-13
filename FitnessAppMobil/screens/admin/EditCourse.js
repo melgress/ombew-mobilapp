@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { styles, buttons } from "../styles";
+import { styles, buttons } from "../../assets/styles";
 
 export default class EditCourse extends Component {
   constructor(props) {

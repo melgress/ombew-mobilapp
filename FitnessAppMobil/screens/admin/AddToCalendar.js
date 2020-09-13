@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { TouchableOpacity, TextInput, View, Text } from "react-native";
-import { styles, buttons } from "../styles";
+import { styles, buttons } from "../../assets/styles";
 
 export default class AddToCalendar extends Component {
   constructor(props) {

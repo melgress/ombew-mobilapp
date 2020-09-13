@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
-import { styles, buttons } from "../styles";
+import { styles, buttons } from "../../assets/styles";
 
 export default class EditCalendar extends Component {
   constructor(props) {

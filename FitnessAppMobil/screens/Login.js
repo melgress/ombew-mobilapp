@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import { styles, buttons } from './styles';
+import { styles, buttons } from "../../assets/styles";
 
 export default class Login extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ export default class Login extends Component {
     if (!this.props.route.params.en) {
       return (
         <View style={styles.layout}>
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             //style={styles.inputForm}
             onChangeText={(text) =>
               this.props.route.params.onChangeUsername(text)
@@ -22,7 +23,8 @@ export default class Login extends Component {
             placeholder="Benutzername"
             value={this.state.username}
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             //style={styles.inputForm}
             secureTextEntry={true}
             onChangeText={(text) =>
@@ -30,7 +32,8 @@ export default class Login extends Component {
             }
             placeholder="Passwort"
           />
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() => {
               this.props.route.params.handleLogin();
               //this.props.navigation.navigate("Home");
@@ -43,7 +46,8 @@ export default class Login extends Component {
     } else {
       return (
         <View style={styles.layout}>
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             //style={styles.inputForm}
             onChangeText={(text) =>
               this.props.route.params.onChangeUsername(text)
@@ -51,7 +55,8 @@ export default class Login extends Component {
             placeholder="Username"
             value={this.state.username}
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             //style={styles.inputForm}
             secureTextEntry={true}
             onChangeText={(text) =>
@@ -59,7 +64,8 @@ export default class Login extends Component {
             }
             placeholder="Password"
           />
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() => {
               this.props.route.params.handleLogin();
               //this.props.navigation.navigate("Home");
