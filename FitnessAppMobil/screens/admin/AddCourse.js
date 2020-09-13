@@ -18,8 +18,6 @@ export default class AddCourse extends Component {
     };
   }
 
-  componentDidMount() {}
-
   onChangeName = (text) => {
     this.setState({
       name: text,

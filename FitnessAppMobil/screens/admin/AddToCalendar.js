@@ -10,7 +10,6 @@ export default class AddToCalendar extends Component {
     this.onChangeDate = this.onChangeDate.bind(this);
     this.state = {
       items: [],
-      item: "",
       name: "",
       date: "",
     };
@@ -98,12 +97,16 @@ export default class AddToCalendar extends Component {
         <View style={styles.layout}>
           <DropDownPicker
             items={this.state.items}
-            style={{ backgroundColor: "#fafafa" }}
+            style={{
+              backgroundColor: "#f5dda9",
+              borderColor: "black",
+            }}
             itemStyle={{
               justifyContent: "flex-start",
             }}
-            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            dropDownStyle={{ backgroundColor: "#f5dda9" }}
             containerStyle={{ height: 40 }}
+            placeholder="Wähle einen Kurs"
             controller={(instance) => (this.controller = instance)}
             onChangeList={(items, callback) => {
               this.setState(
@@ -120,7 +123,7 @@ export default class AddToCalendar extends Component {
             }
           />
           <TextInput
-            style={styles.textInput2}
+            style={styles.textInput3}
             onChangeText={(text) => this.onChangeDate(text)}
             placeholder="2020-09-04"
           />
@@ -137,12 +140,16 @@ export default class AddToCalendar extends Component {
         <View style={styles.layout}>
           <DropDownPicker
             items={this.state.items}
-            style={{ backgroundColor: "#fafafa" }}
+            style={{
+              backgroundColor: "#f5dda9",
+              borderColor: "black",
+            }}
             itemStyle={{
               justifyContent: "flex-start",
             }}
-            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            dropDownStyle={{ backgroundColor: "#f5dda9" }}
             containerStyle={{ height: 40 }}
+            placeholder="Select a course"
             controller={(instance) => (this.controller = instance)}
             onChangeList={(items, callback) => {
               this.setState(
@@ -159,7 +166,7 @@ export default class AddToCalendar extends Component {
             }
           />
           <TextInput
-            style={styles.textInput2}
+            style={styles.textInput3}
             onChangeText={(text) => this.onChangeDate(text)}
             placeholder="2020-09-04"
           />

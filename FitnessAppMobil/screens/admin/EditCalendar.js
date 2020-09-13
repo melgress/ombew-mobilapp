@@ -125,12 +125,16 @@ export default class EditCalendar extends Component {
           <DropDownPicker
             items={this.state.items}
             // defaultValue={this.state.defaultitem}
-            style={{ backgroundColor: "#fafafa" }}
+            style={{
+              backgroundColor: "#f5dda9",
+              borderColor: "black",
+            }}
             itemStyle={{
               justifyContent: "flex-start",
             }}
-            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            dropDownStyle={{ backgroundColor: "#f5dda9" }}
             containerStyle={{ height: 40 }}
+            placeholder="Wähle einen Kurs"
             controller={(instance) => (this.controller = instance)}
             onChangeList={(items, callback) => {
               this.setState(
@@ -147,7 +151,7 @@ export default class EditCalendar extends Component {
             }
           />
           <TextInput
-            style={styles.textInput2}
+            style={styles.textInput3}
             onChangeText={(text) => this.onChangeDate(text)}
             defaultValue={this.state.date}
           />
@@ -163,15 +167,17 @@ export default class EditCalendar extends Component {
       return (
         <View style={styles.layout}>
           <DropDownPicker
-            style={styles.dropdown}
             items={this.state.items}
-            defaultValue={this.state.defaultitem}
-            style={{ backgroundColor: "#fafafa" }}
+            style={{
+              backgroundColor: "#f5dda9",
+              borderColor: "black",
+            }}
             itemStyle={{
               justifyContent: "flex-start",
             }}
-            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            dropDownStyle={{ backgroundColor: "#f5dda9" }}
             containerStyle={{ height: 40 }}
+            placeholder="Select a course"
             controller={(instance) => (this.controller = instance)}
             onChangeList={(items, callback) => {
               this.setState(
@@ -188,7 +194,7 @@ export default class EditCalendar extends Component {
             }
           />
           <TextInput
-            style={styles.textInput2}
+            style={styles.textInput3}
             onChangeText={(text) => this.onChangeDate(text)}
             defaultValue={this.state.date}
           />
