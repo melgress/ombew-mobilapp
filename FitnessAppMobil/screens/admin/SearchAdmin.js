@@ -1,38 +1,32 @@
 import React, { Component } from "react";
-import {
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  Text,
-} from "react-native";
-import { ListItem, Button } from "react-native-elements";
+import { ScrollView, TextInput, TouchableOpacity, Text } from "react-native";
+import { ListItem } from "react-native-elements";
 import { styles, buttons } from "../styles";
 
-export default class FitnessinfoAdmin extends Component {
+export default class SearchAdmin extends Component {
   constructor(props) {
     super(props);
 
-    this._deleteCourse = this._deleteCourse.bind(this);
     this.state = {
       courseList: [],
       search: "",
-      en: Boolean,
     };
   }
 
   componentDidMount() {
-    this.setState({
-      en: this.props.route.params.en,
-    });
-    console.log(this.state.en);
-    this.loadCourses();
+    this.loadEvents();
+    this.focusListener = this.props.navigation.addListener("focus", () =>
+      this.loadEvents()
+    );
   }
 
-  loadCourses() {
+  componentWillUnmount() {
+    this.focusListener();
+  }
+  loadEvents() {
     const url = this.props.route.params.url;
     if (!this.props.route.params.en) {
-      fetch(url + "/fitness")
+      fetch(url + "/fitnessevents")
         .then((response) => response.json())
         .then((data) => {
           this.setState({ courseList: data });
@@ -40,18 +34,8 @@ export default class FitnessinfoAdmin extends Component {
         .catch((error) => {
           throw error;
         });
-      this.props.navigation.addListener("focus", () => {
-        fetch(url + "/fitness")
-          .then((response) => response.json())
-          .then((data) => {
-            this.setState({ courseList: data });
-          })
-          .catch((error) => {
-            throw error;
-          });
-      });
     } else {
-      fetch(url + "/fitness/en")
+      fetch(url + "/fitnessevents/en")
         .then((response) => response.json())
         .then((data) => {
           this.setState({ courseList: data });
@@ -59,19 +43,8 @@ export default class FitnessinfoAdmin extends Component {
         .catch((error) => {
           throw error;
         });
-      this.props.navigation.addListener("focus", () => {
-        fetch(url + "/fitness/en")
-          .then((response) => response.json())
-          .then((data) => {
-            this.setState({ courseList: data });
-          })
-          .catch((error) => {
-            throw error;
-          });
-      });
     }
   }
-
   handleSearch = (text) => {
     if (text) {
       const newData = this.state.courseList.filter(function (item) {
@@ -85,15 +58,15 @@ export default class FitnessinfoAdmin extends Component {
       });
     } else {
       this.setState({ search: "" });
-      this.loadCourses();
+      this.loadEvents();
     }
   };
 
-  _deleteCourse(id) {
-    const { courseList } = this.state;
+  _deleteEvent(id) {
+    const events = this.state.events;
     const url = this.props.route.params.url;
     if (!this.props.route.params.en) {
-      fetch(url + "/fitness/" + id, {
+      fetch(url + "/fitnessevents/" + id, {
         method: "DELETE",
         headers: {
           Accept: "application/json",
@@ -109,10 +82,10 @@ export default class FitnessinfoAdmin extends Component {
         .catch((error) => {
           throw error;
         });
-
-      console.log("Deleted");
+      this.loadEvents();
+      console.log("Gelöscht");
     } else {
-      fetch(url + "/fitness/en/" + id, {
+      fetch(url + "/fitnessevents/en/" + id, {
         method: "DELETE",
         headers: {
           Accept: "application/json",
@@ -128,7 +101,7 @@ export default class FitnessinfoAdmin extends Component {
         .catch((error) => {
           throw error;
         });
-
+      this.loadEvents();
       console.log("Deleted");
     }
   }
@@ -138,7 +111,7 @@ export default class FitnessinfoAdmin extends Component {
 
     if (!this.props.route.params.en) {
       return (
-        <ScrollView style={styles.scrollView}>
+        <ScrollView>
           <TextInput
             style={styles.textInput}
             placeholder="Nach Kurs suchen..."
@@ -146,41 +119,28 @@ export default class FitnessinfoAdmin extends Component {
               this.handleSearch(text);
             }}
           />
-          <TouchableOpacity
-            style={buttons.button3}
-            onPress={() =>
-              this.props.navigation.navigate("AddCourse", {
-                en: this.props.route.params.en,
-                url: this.props.route.params.url,
-              })
-            }
-          >
-            <Text style={buttons.buttontext}>Kurs hinzufügen</Text>
-          </TouchableOpacity>
           {courseList.map((course) => (
             <ListItem key={course.id} bottomDivider>
               <ListItem.Content style={styles.listitem}>
                 <ListItem.Title>{"Name"}</ListItem.Title>
                 <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
-                <ListItem.Title>{"Preis"}</ListItem.Title>
-                <ListItem.Subtitle>{course.price}</ListItem.Subtitle>
-                <ListItem.Title>{"Beschreibung"}</ListItem.Title>
-                <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
+                <ListItem.Title>{"Datum"}</ListItem.Title>
+                <ListItem.Subtitle>{course.date}</ListItem.Subtitle>
                 <TouchableOpacity
                   style={buttons.button5}
-                  onPress={() => this._deleteCourse(course.id)}
+                  onPress={() => this._deleteEvent(course.id)}
                 >
                   <Text>Löschen</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={buttons.button4}
                   onPress={() =>
-                    this.props.navigation.navigate("EditCourse", {
+                    this.props.navigation.navigate("EditCalendar", {
                       id: course.id,
                       name: course.name,
-                      price: course.price,
-                      description: course.description,
+                      date: course.date,
                       en: false,
+                      searched: true,
                       url: this.props.route.params.url,
                     })
                   }
@@ -194,7 +154,7 @@ export default class FitnessinfoAdmin extends Component {
       );
     } else {
       return (
-        <ScrollView style={styles.scrollView}>
+        <ScrollView>
           <TextInput
             style={styles.textInput}
             placeholder="Search for a course..."
@@ -202,47 +162,33 @@ export default class FitnessinfoAdmin extends Component {
               this.handleSearch(text);
             }}
           />
-          <TouchableOpacity
-            style={buttons.button3}
-            onPress={() =>
-              this.props.navigation.navigate("AddCourse", {
-                en: this.props.route.params.en,
-                url: this.props.route.params.url,
-              })
-            }
-          >
-            <Text style={buttons.buttontext}>Add Course</Text>
-          </TouchableOpacity>
-
           {courseList.map((course) => (
             <ListItem key={course.id} bottomDivider>
               <ListItem.Content style={styles.listitem}>
                 <ListItem.Title>{"Name"}</ListItem.Title>
                 <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
-                <ListItem.Title>{"Price"}</ListItem.Title>
-                <ListItem.Subtitle>{course.price}</ListItem.Subtitle>
-                <ListItem.Title>{"Description"}</ListItem.Title>
-                <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
+                <ListItem.Title>{"Date"}</ListItem.Title>
+                <ListItem.Subtitle>{course.date}</ListItem.Subtitle>
                 <TouchableOpacity
                   style={buttons.button5}
-                  onPress={() => this._deleteCourse(course.id)}
+                  onPress={() => this._deleteEvent(course.id)}
                 >
-                  <Text style={buttons.buttontext}>Delete</Text>
+                  <Text>Delete</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={buttons.button4}
                   onPress={() =>
-                    this.props.navigation.navigate("EditCourse", {
+                    this.props.navigation.navigate("EditCalendar", {
                       id: course.id,
                       name: course.name,
-                      price: course.price,
-                      description: course.description,
-                      en: true,
+                      date: course.date,
+                      en: false,
+                      searched: true,
                       url: this.props.route.params.url,
                     })
                   }
                 >
-                  <Text style={buttons.buttontext}>Edit</Text>
+                  <Text>Edit</Text>
                 </TouchableOpacity>
               </ListItem.Content>
             </ListItem>

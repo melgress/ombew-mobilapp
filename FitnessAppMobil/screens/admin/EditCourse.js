@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { styles, buttons } from '../styles';
+import { styles, buttons } from "../styles";
 
 export default class EditCourse extends Component {
   constructor(props) {
@@ -21,7 +21,6 @@ export default class EditCourse extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.route.params.en);
     this.setState({
       name: this.props.route.params.name,
     });
@@ -95,22 +94,25 @@ export default class EditCourse extends Component {
   render() {
     if (!this.props.route.params.en) {
       return (
-        <View
-          style={styles.layout}>
+        <View style={styles.layout}>
           <Text style={styles.text2}>Kurs bearbeiten</Text>
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangeName(text)}
             defaultValue={this.state.name}
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangePrice(text)}
             defaultValue={this.state.price}
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangeDescription(text)}
             defaultValue={this.state.description}
           />
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() => this.handleSubmit()}
           >
             <Text style={buttons.buttontext}>Bearbeiten</Text>
@@ -119,24 +121,27 @@ export default class EditCourse extends Component {
       );
     } else {
       return (
-        <View
-          style={styles.layout}
-        >
+        <View style={styles.layout}>
           <Text style={styles.text2}>Edit a course</Text>
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangeName(text)}
             defaultValue={this.state.name}
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangePrice(text)}
             defaultValue={this.state.price}
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangeDescription(text)}
             defaultValue={this.state.description}
           />
-          <TouchableOpacity style={buttons.button1}
-          onPress={() => this.handleSubmit()}>
+          <TouchableOpacity
+            style={buttons.button1}
+            onPress={() => this.handleSubmit()}
+          >
             <Text style={buttons.buttontext}>Edit</Text>
           </TouchableOpacity>
         </View>
@@ -144,4 +149,3 @@ export default class EditCourse extends Component {
     }
   }
 }
-

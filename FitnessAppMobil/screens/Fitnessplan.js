@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
-import { styles, buttons } from './styles';
+import { styles, buttons } from "./styles";
 
 export default class Fitnessplan extends Component {
   constructor(props) {
@@ -143,14 +143,17 @@ export default class Fitnessplan extends Component {
     if (!this.props.route.params.en) {
       return (
         <View style={styles.layout}>
-          <TextInput style={styles.textInput}
-            placeholder="Nach Kurs suchen..."
-            autoCorrect={false}
-            onChangeText={(text) => {
-              this.handleSearch(text);
-            }}
-            value={this.state.search}
-          />
+          <TouchableOpacity
+            style={buttons.button3}
+            onPress={() =>
+              this.props.navigation.navigate("Search", {
+                en: this.props.route.params.en,
+                url: this.props.route.params.url,
+              })
+            }
+          >
+            <Text style={buttons.buttontext}>Nach Kurs suchen</Text>
+          </TouchableOpacity>
 
           <Agenda
             items={eventsFormatted}
@@ -168,7 +171,8 @@ export default class Fitnessplan extends Component {
     } else {
       return (
         <View style={styles.layout}>
-          <TextInput style={styles.textInput}
+          <TextInput
+            style={styles.textInput}
             placeholder="Search for a course..."
             autoCorrect={false}
             onChangeText={(text) => {

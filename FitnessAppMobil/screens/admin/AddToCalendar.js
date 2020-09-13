@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { TouchableOpacity, TextInput, View, Text } from "react-native";
-import { styles, buttons } from '../styles';
+import { styles, buttons } from "../styles";
 
 export default class AddToCalendar extends Component {
   constructor(props) {
@@ -19,16 +19,32 @@ export default class AddToCalendar extends Component {
   componentDidMount() {
     const url = this.props.route.params.url;
     if (!this.props.route.params.en) {
-      fetch(url + "/dropdown")
+      fetch(url + "/fitness")
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ items: data });
+          let coursesFromApi = data.map((course) => {
+            return { value: course.name, label: course.name };
+          });
+          this.setState({
+            items: coursesFromApi,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
     } else {
-      fetch(url + "/dropdown/en")
+      fetch(url + "/fitness/en")
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ items: data });
+          let coursesFromApi = data.map((course) => {
+            return { value: course.name, label: course.name };
+          });
+          this.setState({
+            items: coursesFromApi,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
     }
   }
@@ -80,8 +96,14 @@ export default class AddToCalendar extends Component {
     if (!this.props.route.params.en) {
       return (
         <View style={styles.layout}>
-          <DropDownPicker style={styles.dropdown}
+          <DropDownPicker
             items={this.state.items}
+            style={{ backgroundColor: "#fafafa" }}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            containerStyle={{ height: 40 }}
             controller={(instance) => (this.controller = instance)}
             onChangeList={(items, callback) => {
               this.setState(
@@ -97,22 +119,30 @@ export default class AddToCalendar extends Component {
               })
             }
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangeDate(text)}
             placeholder="2020-09-04"
           />
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.buttonDropdown}
             onPress={() => this.handleSubmit()}
           >
             <Text style={buttons.buttontext}>Hinzufügen</Text>
           </TouchableOpacity>
-          </View>
+        </View>
       );
     } else {
       return (
         <View style={styles.layout}>
-          <DropDownPicker style={styles.dropdown}
+          <DropDownPicker
             items={this.state.items}
+            style={{ backgroundColor: "#fafafa" }}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            containerStyle={{ height: 40 }}
             controller={(instance) => (this.controller = instance)}
             onChangeList={(items, callback) => {
               this.setState(
@@ -128,12 +158,15 @@ export default class AddToCalendar extends Component {
               })
             }
           />
-          <TextInput style={styles.textInput2}
+          <TextInput
+            style={styles.textInput2}
             onChangeText={(text) => this.onChangeDate(text)}
             placeholder="2020-09-04"
           />
-          <TouchableOpacity style={buttons.button1}
-          onPress={() => this.handleSubmit()}>
+          <TouchableOpacity
+            style={buttons.buttonDropdown}
+            onPress={() => this.handleSubmit()}
+          >
             <Text style={buttons.buttontext}>Add</Text>
           </TouchableOpacity>
         </View>
@@ -141,4 +174,3 @@ export default class AddToCalendar extends Component {
     }
   }
 }
-

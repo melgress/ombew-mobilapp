@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
-import { styles, buttons } from '../styles';
+import { styles, buttons } from "../styles";
 
 export default class EditCalendar extends Component {
   constructor(props) {
@@ -16,28 +16,49 @@ export default class EditCalendar extends Component {
     };
     this.controller;
   }
-  
+
   componentDidMount() {
+    this.setState({
+      date: this.props.route.params.date,
+    });
+
     const url = this.props.route.params.url;
     if (!this.props.route.params.en) {
-      fetch(url + "/dropdown")
+      fetch(url + "/fitness")
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ items: data });
+          let coursesFromApi = data.map((course) => {
+            return { value: course.name, label: course.name };
+          });
+          this.setState({
+            items: coursesFromApi,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      this.setState({
-        date: this.props.route.params.date,
-      });
     } else {
-      fetch(url + "/dropdown/en")
+      fetch(url + "/fitness/en")
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ items: data });
+          let coursesFromApi = data.map((course) => {
+            return { label: course.name, value: course.name };
+          });
+          this.setState({
+            items: coursesFromApi,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      this.setState({
-        date: this.props.route.params.date,
-      });
     }
+    console.log(this.state.defaultitem);
+  }
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state, callback) => {
+      return;
+    };
   }
 
   onChangeDate = (text) => {
@@ -64,7 +85,11 @@ export default class EditCalendar extends Component {
         .catch((error) => {
           throw error;
         });
-      this.props.navigation.goBack("FitnessplanAdmin");
+      if (!this.props.route.params.searched) {
+        this.props.navigation.goBack("FitnessplanAdmin");
+      } else {
+        this.props.navigation.goBack("SearchAdmin");
+      }
       console.log("Bearbeitet");
     } else {
       fetch(url + "/fitnessevent/en/" + this.props.route.params.id, {
@@ -82,74 +107,99 @@ export default class EditCalendar extends Component {
         .catch((error) => {
           throw error;
         });
-      this.props.navigation.goBack("FitnessplanAdmin");
+      if (!this.props.route.params.searched) {
+        this.props.navigation.goBack("FitnessplanAdmin");
+      } else {
+        this.props.navigation.goBack("SearchAdmin");
+      }
       console.log("Edited");
     }
   }
 
   render() {
+    console.log(this.state.defaultitem);
+    //this.controller.selectItem("tennis");
     if (!this.props.route.params.en) {
-    return (
-      <View style={styles.layout}>
-        <DropDownPicker style={styles.dropdown}
-          placeholder="Wähle einen Kurs aus"
-          items={this.state.items}
-          controller={(instance) => (this.controller = instance)}
-          onChangeList={(items, callback) => {
-            this.setState(
-              {
-                items: items,
-              },
-              callback
-            );
-          }}
-          onChangeItem={(item) =>
-            this.setState({
-              name: item.value,
-            })
-          }
-        />
-        <TextInput style={styles.textInput2}
-          onChangeText={(text) => this.onChangeDate(text)}
-          defaultValue={this.state.date}
-        />
-        <TouchableOpacity style={buttons.button1}
-         onPress={() => this.handleSubmit()}>
-          <Text style={buttons.buttontext}>Bearbeiten</Text>
-        </TouchableOpacity>
-       </View>
-       );
-      } else {
-        return (
-          <View style={styles.layout}>
-        <DropDownPicker style={styles.dropdown}
-          placeholder="Select a course"
-          items={this.state.items}
-          controller={(instance) => (this.controller = instance)}
-          onChangeList={(items, callback) => {
-            this.setState(
-              {
-                items: items,
-              },
-              callback
-            );
-          }}
-          onChangeItem={(item) =>
-            this.setState({
-              name: item.value,
-            })
-          }
-        />
-        <TextInput style={styles.textInput2}
-          onChangeText={(text) => this.onChangeDate(text)}
-          defaultValue={this.state.date}
-        />
-       <TouchableOpacity style={buttons.button1}
-         onPress={() => this.handleSubmit()}>
-          <Text style={buttons.buttontext}>Edit</Text>
-        </TouchableOpacity>
-       </View>
-       );
+      return (
+        <View style={styles.layout}>
+          <DropDownPicker
+            items={this.state.items}
+            // defaultValue={this.state.defaultitem}
+            style={{ backgroundColor: "#fafafa" }}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            containerStyle={{ height: 40 }}
+            controller={(instance) => (this.controller = instance)}
+            onChangeList={(items, callback) => {
+              this.setState(
+                {
+                  items: items,
+                },
+                callback
+              );
+            }}
+            onChangeItem={(item) =>
+              this.setState({
+                name: item.value,
+              })
+            }
+          />
+          <TextInput
+            style={styles.textInput2}
+            onChangeText={(text) => this.onChangeDate(text)}
+            defaultValue={this.state.date}
+          />
+          <TouchableOpacity
+            style={buttons.buttonDropdown}
+            onPress={() => this.handleSubmit()}
+          >
+            <Text style={buttons.buttontext}>Bearbeiten</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.layout}>
+          <DropDownPicker
+            style={styles.dropdown}
+            items={this.state.items}
+            defaultValue={this.state.defaultitem}
+            style={{ backgroundColor: "#fafafa" }}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            containerStyle={{ height: 40 }}
+            controller={(instance) => (this.controller = instance)}
+            onChangeList={(items, callback) => {
+              this.setState(
+                {
+                  items: items,
+                },
+                callback
+              );
+            }}
+            onChangeItem={(item) =>
+              this.setState({
+                name: item.value,
+              })
+            }
+          />
+          <TextInput
+            style={styles.textInput2}
+            onChangeText={(text) => this.onChangeDate(text)}
+            defaultValue={this.state.date}
+          />
+          <TouchableOpacity
+            style={buttons.buttonDropdown}
+            onPress={() => this.handleSubmit()}
+          >
+            <Text style={buttons.buttontext}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
-}
 }

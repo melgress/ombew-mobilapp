@@ -12,6 +12,8 @@ import FitnessinfoAdmin from "./screens/admin/FitnessinfoAdmin";
 import FitnessplanAdmin from "./screens/admin/FitnessplanAdmin";
 import AddToCalendar from "./screens/admin/AddToCalendar";
 import EditCalendar from "./screens/admin/EditCalendar";
+import Search from "./screens/Search";
+import SearchAdmin from "./screens/admin/SearchAdmin";
 
 const Stack = createStackNavigator();
 
@@ -53,7 +55,7 @@ export default class App extends Component {
           <Stack.Screen
             name="FitnessplanAdmin"
             component={FitnessplanAdmin}
-            options={{ title: "FitnessplanAdmin" }}
+            options={{ title: "Fitnessplan" }}
           />
           <Stack.Screen
             name="Fitnessinfo"
@@ -63,7 +65,7 @@ export default class App extends Component {
           <Stack.Screen
             name="FitnessinfoAdmin"
             component={FitnessinfoAdmin}
-            options={{ title: "FitnessinfoAdmin" }}
+            options={{ title: "Fitnessinfo" }}
           />
           <Stack.Screen
             name="Login"
@@ -89,6 +91,16 @@ export default class App extends Component {
             name="EditCalendar"
             component={EditCalendar}
             options={{ title: "EditCalendar" }}
+          />
+          <Stack.Screen
+            name="Search"
+            component={Search}
+            options={{ title: "Search" }}
+          />
+          <Stack.Screen
+            name="SearchAdmin"
+            component={SearchAdmin}
+            options={{ title: "Search" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

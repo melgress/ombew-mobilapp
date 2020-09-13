@@ -1,6 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, AsyncStorage, TouchableOpacity } from "react-native";
-import { styles, buttons } from './styles';
+import {
+  View,
+  Text,
+  AsyncStorage,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { styles, buttons } from "./styles";
 
 export default class Home extends Component {
   constructor(props) {
@@ -12,8 +18,9 @@ export default class Home extends Component {
       password: "",
       token: "",
       isLoggedIn: Boolean,
+      pressStatus: false,
       en: false, //if true = english rendering
-      url: "http://192.168.0.95:9000/api", // hier die IP des Laptops angeben, mit der der Server läuft
+      url: "http://192.168.178.23:9000/api", // hier die IP des Laptops angeben, mit der der Server läuft
     };
   }
 
@@ -44,7 +51,6 @@ export default class Home extends Component {
       .then((res) => res.json())
       .then((response) => {
         const token = response.token;
-        //AsyncStorage.getItem('TASKS');
         this.setState({
           token: token,
         });
@@ -55,8 +61,21 @@ export default class Home extends Component {
           });
           this.props.navigation.goBack("Home");
           console.log("Eingeloggt");
-        } else {
+        } else if (!this.state.en) {
           console.log("Nicht geklappt");
+          Alert.alert(
+            "Bitte erneut versuchen",
+            "Benutzername oder Passwort falsch",
+            [{ text: "OK" }],
+            { cancelable: true }
+          );
+        } else {
+          Alert.alert(
+            "Please try again",
+            "Username or Password incorrect",
+            [{ text: "OK" }],
+            { cancelable: true }
+          );
         }
       })
 
@@ -79,20 +98,34 @@ export default class Home extends Component {
     if (this.state.isLoggedIn === true) {
       return (
         <View style={styles.layout}>
-        <Text style={styles.text}>FitMo</Text>
-          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>
-          <TouchableOpacity style={buttons.button2}
-            onPress={() => this.setState({ en: true })}
+          <Text style={styles.text}>FitMo</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
-            <Text style={buttons.buttontext}>EN</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={buttons.button2}
-            onPress={() => this.setState({ en: false })}
-          >
-            <Text style={buttons.buttontext}>DE</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.setState({ en: true, pressStatus: true })}
+              style={
+                this.state.pressStatus ? buttons.buttonPressed : buttons.button2
+              }
+            >
+              <Text style={buttons.buttontext}>EN</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => this.setState({ en: false, pressStatus: false })}
+              style={
+                this.state.pressStatus ? buttons.button2 : buttons.buttonPressed
+              }
+            >
+              <Text style={buttons.buttontext}>DE</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("FitnessinfoAdmin", {
                 en: this.state.en,
@@ -102,7 +135,8 @@ export default class Home extends Component {
           >
             <Text style={buttons.buttontext}>Fitnessinfo</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("FitnessplanAdmin", {
                 en: this.state.en,
@@ -112,7 +146,8 @@ export default class Home extends Component {
           >
             <Text style={buttons.buttontext}>Fitnessplan</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() => {
               this.handleLogout();
             }}
@@ -120,37 +155,50 @@ export default class Home extends Component {
             <Text style={buttons.buttontext}>Logout</Text>
           </TouchableOpacity>
         </View>
-        
       );
     } else {
       return (
-          <View style={styles.layout}>
-            <Text style={styles.text}>FitMo</Text>
-          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>  
-          <TouchableOpacity style={buttons.button2}
-            onPress={() => this.setState({ en: true })}
+        <View style={styles.layout}>
+          <Text style={styles.text}>FitMo</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
-            <Text style={buttons.buttontext}>EN</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={buttons.button2}
-            onPress={() => this.setState({ en: false })}
-          >
-            <Text style={buttons.buttontext}>DE</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.setState({ en: true, pressStatus: true })}
+              style={
+                this.state.pressStatus ? buttons.buttonPressed : buttons.button2
+              }
+            >
+              <Text style={buttons.buttontext}>EN</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => this.setState({ en: false, pressStatus: false })}
+              style={
+                this.state.pressStatus ? buttons.button2 : buttons.buttonPressed
+              }
+            >
+              <Text style={buttons.buttontext}>DE</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={buttons.button1}
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("Fitnessinfo", {
                 en: this.state.en,
                 url: this.state.url,
               })
             }
-            >
-              <Text style={buttons.buttontext}>Fitnessinfo</Text>
-            </TouchableOpacity>
-          
-          <TouchableOpacity style={buttons.button1}
+          >
+            <Text style={buttons.buttontext}>Fitnessinfo</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("Fitnessplan", {
                 en: this.state.en,
@@ -161,9 +209,10 @@ export default class Home extends Component {
             <Text style={buttons.buttontext}>Fitnessplan</Text>
           </TouchableOpacity>
           {
-            <TouchableOpacity style={buttons.button1}
+            <TouchableOpacity
+              style={buttons.button1}
               title="Login"
-              color = "#ffa600"
+              color="#ffa600"
               onPress={() =>
                 this.props.navigation.navigate("Login", {
                   en: this.state.en,
@@ -173,9 +222,9 @@ export default class Home extends Component {
                   onChangePassword: this.onChangePassword.bind(this),
                 })
               }
-              >
-                <Text style={buttons.buttontext}>Login</Text>
-              </TouchableOpacity>
+            >
+              <Text style={buttons.buttontext}>Login</Text>
+            </TouchableOpacity>
           }
         </View>
       );

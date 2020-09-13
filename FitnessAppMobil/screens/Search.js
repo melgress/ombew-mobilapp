@@ -3,7 +3,7 @@ import { ScrollView, TextInput } from "react-native";
 import { ListItem } from "react-native-elements";
 import { styles, buttons } from "./styles";
 
-export default class Fitnessinfo extends Component {
+export default class Search extends Component {
   constructor(props) {
     super(props);
 
@@ -14,12 +14,12 @@ export default class Fitnessinfo extends Component {
   }
 
   componentDidMount() {
-    this.loadCourses();
+    this.loadEvents();
   }
-  loadCourses() {
+  loadEvents() {
     const url = this.props.route.params.url;
     if (!this.props.route.params.en) {
-      fetch(url + "/fitness")
+      fetch(url + "/fitnessevents")
         .then((response) => response.json())
         .then((data) => {
           this.setState({ courseList: data });
@@ -28,7 +28,7 @@ export default class Fitnessinfo extends Component {
           throw error;
         });
     } else {
-      fetch(url + "/fitness/en")
+      fetch(url + "/fitnessevents/en")
         .then((response) => response.json())
         .then((data) => {
           this.setState({ courseList: data });
@@ -51,14 +51,14 @@ export default class Fitnessinfo extends Component {
       });
     } else {
       this.setState({ search: "" });
-      this.loadCourses();
+      this.loadEvents();
     }
   };
 
   render() {
     const courseList = this.state.courseList;
 
-    if (this.props.route.params.en == false) {
+    if (!this.props.route.params.en) {
       return (
         <ScrollView>
           <TextInput
@@ -73,10 +73,8 @@ export default class Fitnessinfo extends Component {
               <ListItem.Content style={styles.listitem}>
                 <ListItem.Title>{"Name"}</ListItem.Title>
                 <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
-                <ListItem.Title>{"Preis"}</ListItem.Title>
-                <ListItem.Subtitle>{course.price}</ListItem.Subtitle>
-                <ListItem.Title>{"Beschreibung"}</ListItem.Title>
-                <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
+                <ListItem.Title>{"Datum"}</ListItem.Title>
+                <ListItem.Subtitle>{course.date}</ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
           ))}
@@ -97,10 +95,8 @@ export default class Fitnessinfo extends Component {
               <ListItem.Content style={styles.listitem}>
                 <ListItem.Title>{"Name"}</ListItem.Title>
                 <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
-                <ListItem.Title>{"Price"}</ListItem.Title>
-                <ListItem.Subtitle>{course.price}</ListItem.Subtitle>
-                <ListItem.Title>{"Description"}</ListItem.Title>
-                <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
+                <ListItem.Title>{"Date"}</ListItem.Title>
+                <ListItem.Subtitle>{course.date}</ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
           ))}

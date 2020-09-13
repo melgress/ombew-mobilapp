@@ -1,15 +1,14 @@
-
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  text:{
+  text: {
     textAlign: "center",
     color: "black",
     fontSize: 50,
     fontWeight: "bold",
     marginBottom: 80,
   },
-  text2:{
+  text2: {
     textAlign: "center",
     color: "black",
     fontSize: 30,
@@ -60,15 +59,14 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderColor: "black",
-    height: 50,
+    paddingTop: 50,
     borderWidth: 2,
     backgroundColor: "#f5dda9",
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 15,
     marginRight: 15,
-  }
-  
+  },
 });
 
 const buttons = StyleSheet.create({
@@ -93,7 +91,7 @@ const buttons = StyleSheet.create({
   button3: {
     elevation: 8,
     backgroundColor: "#ffa600",
-    marginTop:10,
+    marginTop: 10,
     marginRight: 50,
     marginLeft: 50,
     marginBottom: 10,
@@ -105,7 +103,7 @@ const buttons = StyleSheet.create({
     backgroundColor: "#32CD32",
     marginBottom: 5,
     marginRight: 5,
-    marginTop:5,
+    marginTop: 5,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
@@ -114,20 +112,35 @@ const buttons = StyleSheet.create({
     backgroundColor: "#FF0000",
     marginBottom: 5,
     marginRight: 5,
-    marginTop:5,
+    marginTop: 5,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
   },
-  buttontext:{
+  buttonPressed: {
+    backgroundColor: "#ff0000",
+    marginBottom: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  buttontext: {
     textAlign: "center",
     color: "black",
     fontSize: 20,
     fontWeight: "bold",
-  }
-
-
+  },
+  buttonDropdown: {
+    elevation: -1,
+    backgroundColor: "#ffa600",
+    marginRight: 50,
+    marginLeft: 50,
+    marginBottom: 5,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
 });
 
-export {styles, buttons};
-  
+export { styles, buttons };

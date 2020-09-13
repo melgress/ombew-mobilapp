@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { View, Text, Button, TextInput, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
-import { styles, buttons } from '../styles';
+import { styles, buttons } from "../styles";
 
 export default class FitnessplanAdmin extends Component {
   constructor(props) {
@@ -25,6 +25,9 @@ export default class FitnessplanAdmin extends Component {
 
   componentWillUnmount() {
     this.focusListener();
+    this.setState = (state, callback) => {
+      return;
+    };
   }
 
   loadEvents = (day) => {
@@ -126,90 +129,73 @@ export default class FitnessplanAdmin extends Component {
     }
   }
 
-  handleSearch = (text) => {
-    if (text) {
-      const newData = this.state.events.filter(function (item) {
-        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      this.setState({
-        events: newData,
-        search: text,
-      });
-      var eventsFormatted = {};
-      if (this.state.events.length) {
-        this.state.events.map((event) => {
-          let day = event.date; //.toDate().toISOString().split("T")[0]; // Format to YYYY-MM-DD
-
-          if (eventsFormatted[day]) {
-            eventsFormatted[day].push(event);
-          } else {
-            eventsFormatted[day] = [event];
-          }
-        });
-        this.setState({
-          eventsFormatted: eventsFormatted,
-        });
-      }
-    } else {
-      this.setState({ search: "" });
-      this.loadEvents();
-    }
-  };
-
   renderItem(item) {
     // console.log(item.name);
     if (!this.props.route.params.en) {
       return (
         <View>
-          <Text style={styles.textField}>{item.name} {"\n"}
-          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>
-          <TouchableOpacity style={buttons.button4}
-            onPress={() =>
-              this.props.navigation.navigate("EditCalendar", {
-                id: item.id,
-                name: item.name,
-                date: item.date,
-              })
-            }
+          <Text style={styles.textField}>{item.name} </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
-            <Text style={buttons.buttontext}>Bearbeiten</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={buttons.button5}
-            onPress={() => this._deleteEvent(item.id)}
-          >
-            <Text style={buttons.buttontext}>Löschen</Text>
-          </TouchableOpacity>
-        </View>
-        </Text>
+            <TouchableOpacity
+              style={buttons.button4}
+              onPress={() =>
+                this.props.navigation.navigate("EditCalendar", {
+                  id: item.id,
+                  name: item.name,
+                  date: item.date,
+                  url: this.props.route.params.url,
+                })
+              }
+            >
+              <Text style={buttons.buttontext}>Bearbeiten</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttons.button5}
+              onPress={() => this._deleteEvent(item.id)}
+            >
+              <Text style={buttons.buttontext}>Löschen</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     } else {
       return (
         <View>
-          <Text style={styles.textField}>{item.name} {"\n"}
-          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>
-          <TouchableOpacity style={buttons.button4}
-            onPress={() =>
-              this.props.navigation.navigate("EditCalendar", {
-                id: item.id,
-                name: item.name,
-                date: item.date,
-                url: this.props.route.params.url,
-                en: this.props.route.params.en,
-              })
-            }
+          <Text style={styles.textField}>{item.name}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
-            <Text style={buttons.buttontext}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={buttons.button5}
-            onPress={() => this._deleteEvent(item.id)}
-          >
-            <Text style={buttons.buttontext}> Delete</Text>
-          </TouchableOpacity>
-        </View>
-        </Text>
+            <TouchableOpacity
+              style={buttons.button4}
+              onPress={() =>
+                this.props.navigation.navigate("EditCalendar", {
+                  id: item.id,
+                  name: item.name,
+                  date: item.date,
+                  url: this.props.route.params.url,
+                  en: this.props.route.params.en,
+                })
+              }
+            >
+              <Text style={buttons.buttontext}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={buttons.button5}
+              onPress={() => this._deleteEvent(item.id)}
+            >
+              <Text style={buttons.buttontext}> Delete</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -228,15 +214,19 @@ export default class FitnessplanAdmin extends Component {
     if (!this.props.route.params.en) {
       return (
         <View style={styles.layout}>
-          <TextInput style={styles.textInput}
-            placeholder="Nach Kurs suchen..."
-            autoCorrect={false}
-            onChangeText={(text) => {
-              this.handleSearch(text);
-            }}
-            value={this.state.search}
-          />
-          <TouchableOpacity style={buttons.button3}
+          <TouchableOpacity
+            style={buttons.button3}
+            onPress={() =>
+              this.props.navigation.navigate("SearchAdmin", {
+                en: this.props.route.params.en,
+                url: this.props.route.params.url,
+              })
+            }
+          >
+            <Text style={buttons.buttontext}>Nach Kurs suchen</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={buttons.button3}
             onPress={() =>
               this.props.navigation.navigate("AddToCalendar", {
                 en: this.props.route.params.en,
@@ -259,15 +249,19 @@ export default class FitnessplanAdmin extends Component {
     } else {
       return (
         <View style={styles.layout}>
-          <TextInput style={styles.textInput}
-            placeholder="Search for a course..."
-            autoCorrect={false}
-            onChangeText={(text) => {
-              this.handleSearch(text);
-            }}
-            value={this.state.search}
-          />
-          <TouchableOpacity style={buttons.button3}
+          <TouchableOpacity
+            style={buttons.button3}
+            onPress={() =>
+              this.props.navigation.navigate("SearchAdmin", {
+                en: this.props.route.params.en,
+                url: this.props.route.params.url,
+              })
+            }
+          >
+            <Text style={buttons.buttontext}>Search for a course</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={buttons.button3}
             onPress={() =>
               this.props.navigation.navigate("AddToCalendar", {
                 en: this.props.route.params.en,
@@ -275,7 +269,7 @@ export default class FitnessplanAdmin extends Component {
               })
             }
           >
-          <Text style={buttons.buttontext}>Add Course to Calendar</Text>
+            <Text style={buttons.buttontext}>Add Course to Calendar</Text>
           </TouchableOpacity>
           <Agenda
             items={eventsFormatted}
@@ -290,4 +284,3 @@ export default class FitnessplanAdmin extends Component {
     }
   }
 }
-
