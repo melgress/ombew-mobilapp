@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, Text, Button, TextInput } from "react-native";
+import { View, Text, Button, TextInput, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
+import { styles, buttons } from '../styles';
 
 export default class FitnessplanAdmin extends Component {
   constructor(props) {
@@ -162,9 +163,9 @@ export default class FitnessplanAdmin extends Component {
     if (!this.props.route.params.en) {
       return (
         <View>
-          <Text>{item.name}</Text>
-          <Button
-            title="Bearbeiten"
+          <Text style={styles.textField}>{item.name} {"\n"}
+          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>
+          <TouchableOpacity style={buttons.button4}
             onPress={() =>
               this.props.navigation.navigate("EditCalendar", {
                 id: item.id,
@@ -172,19 +173,24 @@ export default class FitnessplanAdmin extends Component {
                 date: item.date,
               })
             }
-          ></Button>
-          <Button
-            title="Löschen"
+          >
+            <Text style={buttons.buttontext}>Bearbeiten</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={buttons.button5}
             onPress={() => this._deleteEvent(item.id)}
-          ></Button>
+          >
+            <Text style={buttons.buttontext}>Löschen</Text>
+          </TouchableOpacity>
+        </View>
+        </Text>
         </View>
       );
     } else {
       return (
         <View>
-          <Text>{item.name}</Text>
-          <Button
-            title="Edit"
+          <Text style={styles.textField}>{item.name} {"\n"}
+          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>
+          <TouchableOpacity style={buttons.button4}
             onPress={() =>
               this.props.navigation.navigate("EditCalendar", {
                 id: item.id,
@@ -194,11 +200,16 @@ export default class FitnessplanAdmin extends Component {
                 en: this.props.route.params.en,
               })
             }
-          ></Button>
-          <Button
-            title="Delete"
+          >
+            <Text style={buttons.buttontext}>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={buttons.button5}
             onPress={() => this._deleteEvent(item.id)}
-          ></Button>
+          >
+            <Text style={buttons.buttontext}> Delete</Text>
+          </TouchableOpacity>
+        </View>
+        </Text>
         </View>
       );
     }
@@ -206,8 +217,8 @@ export default class FitnessplanAdmin extends Component {
 
   renderEmptyDate() {
     return (
-      <View>
-        <Text>This is empty date!</Text>
+      <View style={styles.layout}>
+        <Text style={styles.textField}>This is empty date!</Text>
       </View>
     );
   }
@@ -216,9 +227,8 @@ export default class FitnessplanAdmin extends Component {
     const eventsFormatted = this.state.eventsFormatted;
     if (!this.props.route.params.en) {
       return (
-        <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
-          <TextInput
-            style={{ borderWidth: 1 }}
+        <View style={styles.layout}>
+          <TextInput style={styles.textInput}
             placeholder="Nach Kurs suchen..."
             autoCorrect={false}
             onChangeText={(text) => {
@@ -226,17 +236,17 @@ export default class FitnessplanAdmin extends Component {
             }}
             value={this.state.search}
           />
-          <Button
-            title="Kurs zum Kalendar hinzufügen"
+          <TouchableOpacity style={buttons.button3}
             onPress={() =>
               this.props.navigation.navigate("AddToCalendar", {
                 en: this.props.route.params.en,
                 url: this.props.route.params.url,
               })
             }
-          ></Button>
+          >
+            <Text style={buttons.buttontext}>Kurs zum Kalendar hinzufügen</Text>
+          </TouchableOpacity>
           <Agenda
-            //style={styles.contentContainer}
             items={eventsFormatted}
             loadItemsForMonth={this.loadEvents.bind(this)}
             renderItem={this.renderItem.bind(this)}
@@ -248,9 +258,8 @@ export default class FitnessplanAdmin extends Component {
       );
     } else {
       return (
-        <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
-          <TextInput
-            style={{ borderWidth: 1 }}
+        <View style={styles.layout}>
+          <TextInput style={styles.textInput}
             placeholder="Search for a course..."
             autoCorrect={false}
             onChangeText={(text) => {
@@ -258,17 +267,17 @@ export default class FitnessplanAdmin extends Component {
             }}
             value={this.state.search}
           />
-          <Button
-            title="Add course to calendar"
+          <TouchableOpacity style={buttons.button3}
             onPress={() =>
               this.props.navigation.navigate("AddToCalendar", {
                 en: this.props.route.params.en,
                 url: this.props.route.params.url,
               })
             }
-          ></Button>
+          >
+          <Text style={buttons.buttontext}>Add Course to Calendar</Text>
+          </TouchableOpacity>
           <Agenda
-            //style={styles.contentContainer}
             items={eventsFormatted}
             loadItemsForMonth={this.loadEvents.bind(this)}
             renderItem={this.renderItem.bind(this)}
@@ -281,87 +290,4 @@ export default class FitnessplanAdmin extends Component {
     }
   }
 }
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  contentContainer: {
-    backgroundColor: "purple",
-  },
-  item: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    alignItems: "center",
-  },
-  marginLeft: {
-    marginLeft: 5,
-  },
-  menu: {
-    width: 20,
-    height: 2,
-    backgroundColor: "#111",
-    margin: 2,
-    borderRadius: 3,
-  },
-  text: {
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
-  text1: {
-    textAlign: "left",
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
-    // marginLeft: "auto",
-  },
-  text2: {
-    textAlign: "center",
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "blue",
-    marginLeft: "auto",
-  },
-  text3: {
-    textAlign: "right",
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "orange",
-    marginLeft: "auto",
-  },
 
-  textInput: {
-    width: "90%",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 30,
-    borderColor: "gray",
-    borderBottomWidth: 2,
-    fontSize: 16,
-  },
-  modalView: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  touchableHighlight: {
-    backgroundColor: "white",
-    marginVertical: 10,
-    alignSelf: "stretch",
-    alignItems: "center",
-  },
-});

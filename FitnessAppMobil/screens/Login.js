@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
-import { Button } from "react-native-elements";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { styles, buttons } from './styles';
 
 export default class Login extends Component {
   constructor(props) {
@@ -13,8 +13,8 @@ export default class Login extends Component {
   render() {
     if (!this.props.route.params.en) {
       return (
-        <View>
-          <TextInput
+        <View style={styles.layout}>
+          <TextInput style={styles.textInput2}
             //style={styles.inputForm}
             onChangeText={(text) =>
               this.props.route.params.onChangeUsername(text)
@@ -22,7 +22,7 @@ export default class Login extends Component {
             placeholder="Benutzername"
             value={this.state.username}
           />
-          <TextInput
+          <TextInput style={styles.textInput2}
             //style={styles.inputForm}
             secureTextEntry={true}
             onChangeText={(text) =>
@@ -30,19 +30,20 @@ export default class Login extends Component {
             }
             placeholder="Passwort"
           />
-          <Button
-            title="Login"
+          <TouchableOpacity style={buttons.button1}
             onPress={() => {
               this.props.route.params.handleLogin();
               //this.props.navigation.navigate("Home");
             }}
-          />
+          >
+            <Text style={buttons.buttontext}>Login</Text>
+          </TouchableOpacity>
         </View>
       );
     } else {
       return (
-        <View>
-          <TextInput
+        <View style={styles.layout}>
+          <TextInput style={styles.textInput2}
             //style={styles.inputForm}
             onChangeText={(text) =>
               this.props.route.params.onChangeUsername(text)
@@ -50,7 +51,7 @@ export default class Login extends Component {
             placeholder="Username"
             value={this.state.username}
           />
-          <TextInput
+          <TextInput style={styles.textInput2}
             //style={styles.inputForm}
             secureTextEntry={true}
             onChangeText={(text) =>
@@ -58,65 +59,16 @@ export default class Login extends Component {
             }
             placeholder="Password"
           />
-          <Button
-            title="Login"
+          <TouchableOpacity style={buttons.button1}
             onPress={() => {
               this.props.route.params.handleLogin();
               //this.props.navigation.navigate("Home");
             }}
-          />
+          >
+            <Text style={buttons.buttontext}>Login</Text>
+          </TouchableOpacity>
         </View>
       );
     }
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  contentContainer: {
-    backgroundColor: "purple",
-  },
-  item: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    alignItems: "center",
-  },
-  marginLeft: {
-    marginLeft: 5,
-  },
-  menu: {
-    width: 20,
-    height: 2,
-    backgroundColor: "#111",
-    margin: 2,
-    borderRadius: 3,
-  },
-  text: {
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
-
-  textInput: {
-    width: "90%",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 30,
-    borderColor: "gray",
-    borderBottomWidth: 2,
-    fontSize: 16,
-  },
-  Button: {},
-});

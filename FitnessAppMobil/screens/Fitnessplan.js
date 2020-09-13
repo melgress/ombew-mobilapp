@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, Text, TextInput } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { Agenda } from "react-native-calendars";
+import { styles, buttons } from './styles';
 
 export default class Fitnessplan extends Component {
   constructor(props) {
@@ -122,8 +123,8 @@ export default class Fitnessplan extends Component {
 
   renderItem(item) {
     return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <Text>{item.name}</Text>
+      <View>
+        <Text style={styles.textField}>{item.name}</Text>
       </View>
     );
   }
@@ -131,7 +132,7 @@ export default class Fitnessplan extends Component {
   renderEmptyDate() {
     return (
       <View>
-        <Text>This is empty date!</Text>
+        <Text style={styles.textField}>This is empty date!</Text>
       </View>
     );
   }
@@ -141,9 +142,8 @@ export default class Fitnessplan extends Component {
 
     if (!this.props.route.params.en) {
       return (
-        <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
-          <TextInput
-            style={{ borderWidth: 1 }}
+        <View style={styles.layout}>
+          <TextInput style={styles.textInput}
             placeholder="Nach Kurs suchen..."
             autoCorrect={false}
             onChangeText={(text) => {
@@ -153,7 +153,6 @@ export default class Fitnessplan extends Component {
           />
 
           <Agenda
-            //style={styles.calendar}
             items={eventsFormatted}
             loadItemsForMonth={this.loadEvents}
             renderItem={this.renderItem.bind(this)}
@@ -168,9 +167,8 @@ export default class Fitnessplan extends Component {
       );
     } else {
       return (
-        <View style={{ flex: 1, backgroundColor: "white", paddingBottom: 30 }}>
-          <TextInput
-            style={{ borderWidth: 1 }}
+        <View style={styles.layout}>
+          <TextInput style={styles.textInput}
             placeholder="Search for a course..."
             autoCorrect={false}
             onChangeText={(text) => {
@@ -180,7 +178,6 @@ export default class Fitnessplan extends Component {
           />
 
           <Agenda
-            //style={styles.calendar}
             items={eventsFormatted}
             loadItemsForMonth={this.loadEvents}
             renderItem={this.renderItem.bind(this)}
@@ -196,52 +193,3 @@ export default class Fitnessplan extends Component {
     }
   }
 }
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  contentContainer: {
-    backgroundColor: "purple",
-  },
-  item: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    alignItems: "center",
-  },
-  marginLeft: {
-    marginLeft: 5,
-  },
-  menu: {
-    width: 20,
-    height: 2,
-    backgroundColor: "#111",
-    margin: 2,
-    borderRadius: 3,
-  },
-  text: {
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
-
-  textInput: {
-    width: "90%",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 30,
-    borderColor: "gray",
-    borderBottomWidth: 2,
-    fontSize: 16,
-  },
-  calendar: {},
-});

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
-import { View, TextInput, ScrollView, StyleSheet } from "react-native";
-import { Button } from "react-native-elements";
+import { TextInput, Text, View, TouchableOpacity } from "react-native";
+import { styles, buttons } from '../styles';
 
 export default class EditCalendar extends Component {
   constructor(props) {
@@ -16,10 +16,11 @@ export default class EditCalendar extends Component {
     };
     this.controller;
   }
+  
   componentDidMount() {
     const url = this.props.route.params.url;
     if (!this.props.route.params.en) {
-      fetch(url + "/api/dropdown")
+      fetch(url + "/dropdown")
         .then((response) => response.json())
         .then((data) => {
           this.setState({ items: data });
@@ -87,9 +88,11 @@ export default class EditCalendar extends Component {
   }
 
   render() {
+    if (!this.props.route.params.en) {
     return (
-      <ScrollView>
-        <DropDownPicker
+      <View style={styles.layout}>
+        <DropDownPicker style={styles.dropdown}
+          placeholder="Wähle einen Kurs aus"
           items={this.state.items}
           controller={(instance) => (this.controller = instance)}
           onChangeList={(items, callback) => {
@@ -100,80 +103,53 @@ export default class EditCalendar extends Component {
               callback
             );
           }}
-          dropDownMaxHeight={300}
-          style={{ backgroundColor: "#fafafa" }}
-          itemStyle={{
-            justifyContent: "flex-start",
-          }}
-          dropDownStyle={{ marginTop: 2 }}
           onChangeItem={(item) =>
             this.setState({
               name: item.value,
             })
           }
         />
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            width: 300,
-          }}
+        <TextInput style={styles.textInput2}
           onChangeText={(text) => this.onChangeDate(text)}
           defaultValue={this.state.date}
         />
-        <Button title="Edit" onPress={() => this.handleSubmit()}></Button>
-      </ScrollView>
-    );
+        <TouchableOpacity style={buttons.button1}
+         onPress={() => this.handleSubmit()}>
+          <Text style={buttons.buttontext}>Bearbeiten</Text>
+        </TouchableOpacity>
+       </View>
+       );
+      } else {
+        return (
+          <View style={styles.layout}>
+        <DropDownPicker style={styles.dropdown}
+          placeholder="Select a course"
+          items={this.state.items}
+          controller={(instance) => (this.controller = instance)}
+          onChangeList={(items, callback) => {
+            this.setState(
+              {
+                items: items,
+              },
+              callback
+            );
+          }}
+          onChangeItem={(item) =>
+            this.setState({
+              name: item.value,
+            })
+          }
+        />
+        <TextInput style={styles.textInput2}
+          onChangeText={(text) => this.onChangeDate(text)}
+          defaultValue={this.state.date}
+        />
+       <TouchableOpacity style={buttons.button1}
+         onPress={() => this.handleSubmit()}>
+          <Text style={buttons.buttontext}>Edit</Text>
+        </TouchableOpacity>
+       </View>
+       );
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  contentContainer: {
-    backgroundColor: "purple",
-  },
-  item: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    alignItems: "center",
-  },
-  marginLeft: {
-    marginLeft: 5,
-  },
-  menu: {
-    width: 20,
-    height: 2,
-    backgroundColor: "#111",
-    margin: 2,
-    borderRadius: 3,
-  },
-  text: {
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
-
-  textInput: {
-    width: "90%",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 30,
-    borderColor: "gray",
-    borderBottomWidth: 2,
-    fontSize: 16,
-  },
-  Button: {},
-});
+}

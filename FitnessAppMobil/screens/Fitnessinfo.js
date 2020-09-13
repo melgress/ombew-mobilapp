@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, ScrollView, TextInput } from "react-native";
+import { ScrollView, TextInput } from "react-native";
 import { ListItem } from "react-native-elements";
+import { styles, buttons } from './styles';
 
 export default class Fitnessinfo extends Component {
   constructor(props) {
@@ -60,8 +61,7 @@ export default class Fitnessinfo extends Component {
     if (this.props.route.params.en == false) {
       return (
         <ScrollView>
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <TextInput style={styles.textInput}
             placeholder="Nach Kurs suchen..."
             onChangeText={(text) => {
               this.handleSearch(text);
@@ -69,7 +69,7 @@ export default class Fitnessinfo extends Component {
           />
           {courseList.map((course) => (
             <ListItem key={course.id} bottomDivider>
-              <ListItem.Content>
+              <ListItem.Content style={styles.listitem}>
                 <ListItem.Title>{"Name"}</ListItem.Title>
                 <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
                 <ListItem.Title>{"Preis"}</ListItem.Title>
@@ -84,8 +84,7 @@ export default class Fitnessinfo extends Component {
     } else {
       return (
         <ScrollView>
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <TextInput style={styles.textInput}
             placeholder="Search for a course..."
             onChangeText={(text) => {
               this.handleSearch(text);
@@ -93,7 +92,7 @@ export default class Fitnessinfo extends Component {
           />
           {courseList.map((course) => (
             <ListItem key={course.id} bottomDivider>
-              <ListItem.Content>
+              <ListItem.Content style={styles.listitem}>
                 <ListItem.Title>{"Name"}</ListItem.Title>
                 <ListItem.Subtitle>{course.name}</ListItem.Subtitle>
                 <ListItem.Title>{"Price"}</ListItem.Title>
@@ -109,50 +108,4 @@ export default class Fitnessinfo extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  contentContainer: {
-    backgroundColor: "white",
-  },
-  item: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    alignItems: "center",
-  },
-  marginLeft: {
-    marginLeft: 5,
-  },
-  menu: {
-    width: 20,
-    height: 2,
-    backgroundColor: "#111",
-    margin: 2,
-    borderRadius: 3,
-  },
-  text: {
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
-  textInput: {
-    width: "90%",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 30,
-    borderColor: "gray",
-    borderBottomWidth: 2,
-    fontSize: 16,
-  },
-});
+

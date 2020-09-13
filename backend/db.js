@@ -3,7 +3,7 @@ const mysql = require("mysql");
 
 var con = mysql.createConnection({
   //hier muss die individuelle IP des Laptops, mit dem der Server gestartet wurde, angegeben werden
-  host: "192.168.178.23",
+  host: "192.168.0.95",
   user: "admin",
   password: "admin",
   database: "WebmoMobile",

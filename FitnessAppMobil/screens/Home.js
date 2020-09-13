@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, View, Text, AsyncStorage, StyleSheet } from "react-native";
+import { View, Text, AsyncStorage, TouchableOpacity } from "react-native";
+import { styles, buttons } from './styles';
 
 export default class Home extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class Home extends Component {
       token: "",
       isLoggedIn: Boolean,
       en: false, //if true = english rendering
-      url: "http://192.168.178.23:9000/api/", // hier die IP des Laptops angeben, mit der der Server läuft
+      url: "http://192.168.0.95:9000/api", // hier die IP des Laptops angeben, mit der der Server läuft
     };
   }
 
@@ -77,88 +78,92 @@ export default class Home extends Component {
   render() {
     if (this.state.isLoggedIn === true) {
       return (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Button
-            //styles= kannst du unten im Stylesheet definieren und dann unter styles.Button hier einfügen
-            title="EN"
+        <View style={styles.layout}>
+        <Text style={styles.text}>FitMo</Text>
+          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>
+          <TouchableOpacity style={buttons.button2}
             onPress={() => this.setState({ en: true })}
-          ></Button>
-          <Button
-            //styles=
-            title="DE"
+          >
+            <Text style={buttons.buttontext}>EN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={buttons.button2}
             onPress={() => this.setState({ en: false })}
-          ></Button>
-
-          <Button
-            title="Fitnessinfo"
+          >
+            <Text style={buttons.buttontext}>DE</Text>
+          </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("FitnessinfoAdmin", {
                 en: this.state.en,
                 url: this.state.url,
               })
             }
-          />
-          <Button
-            title="Fitnessplan"
+          >
+            <Text style={buttons.buttontext}>Fitnessinfo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("FitnessplanAdmin", {
                 en: this.state.en,
                 url: this.state.url,
               })
             }
-          />
-          <Button
-            title="Logout"
+          >
+            <Text style={buttons.buttontext}>Fitnessplan</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={buttons.button1}
             onPress={() => {
               this.handleLogout();
             }}
-          />
+          >
+            <Text style={buttons.buttontext}>Logout</Text>
+          </TouchableOpacity>
         </View>
+        
       );
     } else {
       return (
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Button
-            //styles=
-            title="EN"
+          <View style={styles.layout}>
+            <Text style={styles.text}>FitMo</Text>
+          <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: "center",}}>  
+          <TouchableOpacity style={buttons.button2}
             onPress={() => this.setState({ en: true })}
-          ></Button>
-          <Button
-            //styles=
-            title="DE"
+          >
+            <Text style={buttons.buttontext}>EN</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={buttons.button2}
             onPress={() => this.setState({ en: false })}
-            color="green"
-          ></Button>
-
-          <Button
-            title="Fitnessinfo"
+          >
+            <Text style={buttons.buttontext}>DE</Text>
+          </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("Fitnessinfo", {
                 en: this.state.en,
                 url: this.state.url,
               })
             }
-          />
-          <Button
-            title="Fitnessplan"
+            >
+              <Text style={buttons.buttontext}>Fitnessinfo</Text>
+            </TouchableOpacity>
+          
+          <TouchableOpacity style={buttons.button1}
             onPress={() =>
               this.props.navigation.navigate("Fitnessplan", {
                 en: this.state.en,
                 url: this.state.url,
               })
             }
-          />
+          >
+            <Text style={buttons.buttontext}>Fitnessplan</Text>
+          </TouchableOpacity>
           {
-            <Button
+            <TouchableOpacity style={buttons.button1}
               title="Login"
+              color = "#ffa600"
               onPress={() =>
                 this.props.navigation.navigate("Login", {
                   en: this.state.en,
@@ -168,60 +173,12 @@ export default class Home extends Component {
                   onChangePassword: this.onChangePassword.bind(this),
                 })
               }
-            />
+              >
+                <Text style={buttons.buttontext}>Login</Text>
+              </TouchableOpacity>
           }
         </View>
       );
     }
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  contentContainer: {
-    backgroundColor: "purple",
-  },
-  item: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    alignItems: "center",
-  },
-  marginLeft: {
-    marginLeft: 5,
-  },
-  menu: {
-    width: 20,
-    height: 2,
-    backgroundColor: "#111",
-    margin: 2,
-    borderRadius: 3,
-  },
-  text: {
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
-
-  textInput: {
-    width: "90%",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 30,
-    borderColor: "gray",
-    borderBottomWidth: 2,
-    fontSize: 16,
-  },
-  Button: {},
-});

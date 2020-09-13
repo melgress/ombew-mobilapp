@@ -28,10 +28,12 @@ export default class App extends Component {
           screenOptions={{
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#621FF7",
+              backgroundColor: "#ffa600",
+              height: 100,
             },
-            headerTintColor: "#fff",
+            headerTintColor: "black",
             headerTitleStyle: {
+              fontSize: 30,
               fontWeight: "bold",
             },
           }}

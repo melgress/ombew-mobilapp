@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { styles, buttons } from '../styles';
 
 export default class EditCourse extends Component {
   constructor(props) {
@@ -95,134 +96,52 @@ export default class EditCourse extends Component {
     if (!this.props.route.params.en) {
       return (
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text>Kurs bearbeiten</Text>
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              width: 300,
-            }}
+          style={styles.layout}>
+          <Text style={styles.text2}>Kurs bearbeiten</Text>
+          <TextInput style={styles.textInput2}
             onChangeText={(text) => this.onChangeName(text)}
             defaultValue={this.state.name}
           />
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              width: 300,
-            }}
+          <TextInput style={styles.textInput2}
             onChangeText={(text) => this.onChangePrice(text)}
             defaultValue={this.state.price}
           />
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              width: 300,
-            }}
+          <TextInput style={styles.textInput2}
             onChangeText={(text) => this.onChangeDescription(text)}
             defaultValue={this.state.description}
           />
-          <Button
-            title="Bearbeiten"
+          <TouchableOpacity style={buttons.button1}
             onPress={() => this.handleSubmit()}
-          ></Button>
+          >
+            <Text style={buttons.buttontext}>Bearbeiten</Text>
+          </TouchableOpacity>
         </View>
       );
     } else {
       return (
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          style={styles.layout}
         >
-          <Text>Edit a course</Text>
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              width: 300,
-            }}
+          <Text style={styles.text2}>Edit a course</Text>
+          <TextInput style={styles.textInput2}
             onChangeText={(text) => this.onChangeName(text)}
             defaultValue={this.state.name}
           />
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              width: 300,
-            }}
+          <TextInput style={styles.textInput2}
             onChangeText={(text) => this.onChangePrice(text)}
             defaultValue={this.state.price}
           />
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: "gray",
-              borderWidth: 1,
-              width: 300,
-            }}
+          <TextInput style={styles.textInput2}
             onChangeText={(text) => this.onChangeDescription(text)}
             defaultValue={this.state.description}
           />
-          <Button title="Edit" onPress={() => this.handleSubmit()}></Button>
+          <TouchableOpacity style={buttons.button1}
+          onPress={() => this.handleSubmit()}>
+            <Text style={buttons.buttontext}>Edit</Text>
+          </TouchableOpacity>
         </View>
       );
     }
   }
 }
 
-const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  contentContainer: {
-    backgroundColor: "purple",
-  },
-  item: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    alignItems: "center",
-  },
-  marginLeft: {
-    marginLeft: 5,
-  },
-  menu: {
-    width: 20,
-    height: 2,
-    backgroundColor: "#111",
-    margin: 2,
-    borderRadius: 3,
-  },
-  text: {
-    marginVertical: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
-
-  textInput: {
-    width: "90%",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 30,
-    borderColor: "gray",
-    borderBottomWidth: 2,
-    fontSize: 16,
-  },
-  Button: {},
-});
