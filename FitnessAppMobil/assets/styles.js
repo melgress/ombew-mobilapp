@@ -57,16 +57,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
   },
-  dropdown: {
-    borderColor: "black",
-    paddingTop: 50,
-    borderWidth: 2,
-    backgroundColor: "#f5dda9",
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 15,
-    marginRight: 15,
-  },
 });
 
 const buttons = StyleSheet.create({
