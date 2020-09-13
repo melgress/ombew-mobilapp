@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import { styles, buttons } from "../../assets/styles";
+import { styles, buttons } from "../assets/styles";
 
 export default class Login extends Component {
   constructor(props) {
