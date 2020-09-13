@@ -1,7 +1,16 @@
 import React, { Component } from "react";
-import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  YellowBox,
+} from "react-native";
 import { styles, buttons } from "../assets/styles";
 
+YellowBox.ignoreWarnings([
+  "Non-serializable values were found in the navigation state",
+]);
 export default class Login extends Component {
   constructor(props) {
     super(props);

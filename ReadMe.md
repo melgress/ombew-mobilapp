@@ -1,4 +1,4 @@
-Die mobile App wird mit Hilfe von "Expo" ausgeführt.
+Die mobile App ist in React Native geschrieben wird mit Hilfe des Cross-Platform Mobile Development Tools "Expo" ausgeführt.
 
 Wie starte ich die App?
 Da die App mit einem Backend-Server läuft, muss an zwei Stellen (backend/db.js:6 & FitnessAppMobil/screens/Home.js: 23) die IP-Adresse des Laptops, mit dem der Server gestartet wird, als Host eingetragen werden. (Über "localhost" kann der Server auf dem Handy nicht erreicht werden!)

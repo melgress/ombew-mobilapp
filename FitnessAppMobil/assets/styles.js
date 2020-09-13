@@ -108,7 +108,7 @@ const buttons = StyleSheet.create({
     paddingHorizontal: 10,
   },
   buttonPressed: {
-    backgroundColor: "#ff0000",
+    backgroundColor: "#ffa600",
     marginBottom: 5,
     marginRight: 5,
     borderRadius: 10,
