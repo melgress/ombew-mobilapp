@@ -11,7 +11,7 @@ const uuid = require("uuid");
 const jwt = require("jsonwebtoken");
 const db = require("../db.js");
 
-// Sign Up is just for testing purpose
+// Sign Up is just for testing purpose e.g. in Postman
 routerUser.post("/sign-up", (req, res) => {
   db.query(
     `SELECT * FROM accounts WHERE LOWER(username) = LOWER(${db.escape(

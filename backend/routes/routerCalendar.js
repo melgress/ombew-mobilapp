@@ -82,22 +82,6 @@ routerCalendar.delete("/fitnessevents/en/:id", (req, res) => {
   );
 });
 
-//For DropDownMenu
-routerCalendar.get("/dropdown", (req, res) => {
-  db.query("SELECT * from dropdown", (err, rows, fields) => {
-    if (!err) res.send(rows);
-    else console.log(err);
-  });
-});
-
-//For English: For DropDownMenu
-routerCalendar.get("/dropdown/en", (req, res) => {
-  db.query("SELECT * from dropdown_en", (err, rows, fields) => {
-    if (!err) res.send(rows);
-    else console.log(err);
-  });
-});
-
 //route for insert data into agenda
 routerCalendar.post("/addFitnessevent", (req, res) => {
   let data = {

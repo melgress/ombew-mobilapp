@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { View, Text, Button, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { styles, buttons } from "../../assets/styles";
 
@@ -201,14 +201,6 @@ export default class FitnessplanAdmin extends Component {
     }
   }
 
-  renderEmptyDate() {
-    return (
-      <View style={styles.layout}>
-        <Text style={styles.textField}>This is empty date!</Text>
-      </View>
-    );
-  }
-
   render() {
     const eventsFormatted = this.state.eventsFormatted;
     if (!this.props.route.params.en) {
@@ -241,7 +233,6 @@ export default class FitnessplanAdmin extends Component {
             loadItemsForMonth={this.loadEvents.bind(this)}
             renderItem={this.renderItem.bind(this)}
             renderEmptyData={() => null}
-            renderEmptyDate={this.renderEmptyDate.bind(this)}
             events={this.state.eventsFormatted}
           />
         </View>
@@ -276,7 +267,6 @@ export default class FitnessplanAdmin extends Component {
             loadItemsForMonth={this.loadEvents.bind(this)}
             renderItem={this.renderItem.bind(this)}
             renderEmptyData={() => null}
-            renderEmptyDate={this.renderEmptyDate.bind(this)}
             events={this.state.eventsFormatted}
           />
         </View>
