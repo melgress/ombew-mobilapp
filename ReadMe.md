@@ -6,12 +6,12 @@ Da die App mit einem Backend-Server läuft, muss an zwei Stellen (backend/db.js:
 Es muss eine neue MYSQL-Datenbank "WebmoMobile" mit dem beigefügten SQL-File "WebmoMobile.sql" angelegt werden:
 mysql>create database WebmoMobile;
 mysql>use WebmoMobile;
-mysql> source <path to the sqlfile>;
+mysql> source "path to the sqlfile";
 
 Außerdem muss bei mysql der User "admin" für die neue IP-Adresse freigegeben werden:
-mysql>create user 'admin'@'<individuelle IP-Adresse>' identified by 'admin';
-mysql>grant all on WebmoMobile.\* to 'admin'@'<individuelle IP-Adresse>';
-mysql>ALTER USER 'admin'@'<individuelle IP-Adresse>' IDENTIFIED WITH mysql_native_password BY 'admin';
+mysql>create user 'admin'@'"individuelle IP-Adresse"' identified by 'admin';
+mysql>grant all on WebmoMobile.\* to 'admin'@'"individuelle IP-Adresse"';
+mysql>ALTER USER 'admin'@'"individuelle IP-Adresse"' IDENTIFIED WITH mysql_native_password BY 'admin';
 mysql>FLUSH PRIVILEGES;
 
 Anschließend wird das Backend gestartet (cd backend > node index.js) und danach das Frontend(cd FitnessAppMobil > npm start)
